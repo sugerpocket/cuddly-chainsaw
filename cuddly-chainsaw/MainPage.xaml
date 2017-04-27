@@ -8,6 +8,11 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Button Click="login_click" Margin="10,225,0,383">登陆</Button>
+        <Button Click="register_click" Margin="10,262,0,346">注册</Button>
+        <Button Click="getAllUser_click" Margin="10,373,0,235">所有用户</Button>
+        <Button Click="updateUser_click" Margin="10,336,0,272">更新用户</Button>
+        <Button Click="deleteUser_click" Margin="10,299,0,309">删除用户</Button>
+        <Button Click="updateProfile_click" Margin="10,410,0,198">更新自己</Button>
     </Grid>
 </Page>
