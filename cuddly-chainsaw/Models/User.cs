@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -94,7 +96,7 @@ namespace cuddly_chainsaw.Models
             return nickname;
         }
 
-        public Boolean getIsTeacher()
+        public Boolean isAdmin()
         {
             return role;
         }
@@ -130,11 +132,19 @@ namespace cuddly_chainsaw.Models
             try
             {
                 result = await Server.getInstance().post("auth/register", info);
+            }
+            catch (COMException e)
+            {
+                cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), null, "无法连接服务器");
+                return;
+            }
+            try
+            {
                 res = JsonConvert.DeserializeObject<ServerResponse<User>>(result);
             }
             catch (Exception e)
             {
-                cb(new ResponseError("NETWORK_ERROR", "发生未知错误，或许是连接不上服务器"), null, "发生未知错误，或许是连接不上服务器");
+                cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), null, "无法解析服务器返回的信息: " + result);
                 return;
             }
             if (res.isSuccess())
@@ -158,11 +168,19 @@ namespace cuddly_chainsaw.Models
             try
             {
                 result = await Server.getInstance().post("auth/login", info);
+            }
+            catch (COMException e)
+            {
+                cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), null, "无法连接服务器");
+                return;
+            }
+            try
+            {
                 res = JsonConvert.DeserializeObject<ServerResponse<User>>(result);
             }
             catch (Exception e)
             {
-                cb(new ResponseError("NETWORK_ERROR", "发生未知错误，或许是连接不上服务器"), null, "发生未知错误，或许是连接不上服务器");
+                cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), null, "无法解析服务器返回的信息: " + result);
                 return;
             }
             if (res.isSuccess())
@@ -174,11 +192,11 @@ namespace cuddly_chainsaw.Models
         }
 
         //user
-        public async void updateProfile(string nickname, string password, Action<ResponseError, bool?, string> cb)
+        public async void updateProfile(string nickname, string password, Action<ResponseError, UserMeta, string> cb)
         {
             if (!this.role)
             {
-                cb(null, false, "没有权限的操作");
+                cb(null, null, "没有权限的操作");
                 return;
             };
 
@@ -187,23 +205,31 @@ namespace cuddly_chainsaw.Models
             if (password != null) body["password"] = password;
             string info = JsonConvert.SerializeObject(body, Formatting.Indented);
             string result = "";
-            ServerResponse<bool?> res = null;
+            ServerResponse<UserMeta> res = null;
             try
             {
                 result = await Server.getInstance().put("api/user/update", info);
-                res = JsonConvert.DeserializeObject<ServerResponse<bool?>>(result);
             }
             catch (Exception e)
             {
-                cb(new ResponseError("NETWORK_ERROR", "发生未知错误，或许是连接不上服务器"), false, "发生未知错误，或许是连接不上服务器");
+                cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), null, "无法连接服务器");
+                return;
+            }
+            try
+            {
+                res = JsonConvert.DeserializeObject<ServerResponse<UserMeta>>(result);
+            }
+            catch (Exception e)
+            {
+                cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), null, "无法解析服务器返回的信息: " + result);
                 return;
             }
             if (res.isSuccess())
             {
-                bool? data = res.getData();
+                UserMeta data = res.getData();
                 cb(null, data, res.getMessage());
             }
-            else cb(res.getError(), false, res.getMessage());
+            else cb(res.getError(), null, res.getMessage());
         }
 
         //admin
@@ -219,11 +245,19 @@ namespace cuddly_chainsaw.Models
             try
             {
                 result = await Server.getInstance().delete("api/admin/delete/" + uid);
+            }
+            catch (COMException e)
+            {
+                cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), null, "无法连接服务器");
+                return;
+            }
+            try
+            {
                 res = JsonConvert.DeserializeObject<ServerResponse<User>>(result);
             }
             catch (Exception e)
             {
-                cb(new ResponseError("NETWORK_ERROR", "发生未知错误，或许是连接不上服务器"), null, "发生未知错误，或许是连接不上服务器");
+                cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), null, "无法解析服务器返回的信息: " + result);
                 return;
             }
             if (res.isSuccess()) {
@@ -246,11 +280,19 @@ namespace cuddly_chainsaw.Models
             try
             {
                 result = await Server.getInstance().get("api/admin/users");
+            }
+            catch (COMException e)
+            {
+                cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), null, "无法连接服务器");
+                return;
+            }
+            try
+            {
                 res = JsonConvert.DeserializeObject<ServerResponse<List<UserMeta>>>(result);
             }
             catch (Exception e)
             {
-                cb(new ResponseError("NETWORK_ERROR", "发生未知错误，或许是连接不上服务器"), null, "发生未知错误，或许是连接不上服务器");
+                cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), null, "无法解析服务器返回的信息: " + result);
                 return;
             }
             if (res.isSuccess())
@@ -261,11 +303,11 @@ namespace cuddly_chainsaw.Models
             else cb(res.getError(), null, res.getMessage());
         }
 
-        public async void updateUser(string uid, string username, string password, Action<ResponseError, bool?, string> cb)
+        public async void updateUser(string uid, string username, string password, Action<ResponseError, User, string> cb)
         {
             if (!this.role)
             {
-                cb(null, false, "没有权限的操作");
+                cb(null, null, "没有权限的操作");
                 return;
             };
 
@@ -274,23 +316,31 @@ namespace cuddly_chainsaw.Models
             if (password != null) body["password"] = password;
             string info = JsonConvert.SerializeObject(body, Formatting.Indented);
             string result = "";
-            ServerResponse<bool?> res = null;
+            ServerResponse<User> res = null;
             try
             {
                 result = await Server.getInstance().put("api/admin/update", info);
-                res = JsonConvert.DeserializeObject<ServerResponse<bool?>>(result);
+            }
+            catch (COMException e)
+            {
+                cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), null, "无法连接服务器");
+                return;
+            }
+            try
+            {
+                res = JsonConvert.DeserializeObject<ServerResponse<User>>(result);
             }
             catch (Exception e)
             {
-                cb(new ResponseError("NETWORK_ERROR", "发生未知错误，或许是连接不上服务器"), false, "发生未知错误，或许是连接不上服务器");
+                cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), null, "无法解析服务器返回的信息: " + result);
                 return;
             }
             if (res.isSuccess())
             {
-                bool? data = res.getData();
+                User data = res.getData();
                 cb(null, data, res.getMessage());
             }
-            else cb(res.getError(), false, res.getMessage());
+            else cb(res.getError(), null, res.getMessage());
         }
     }
 }
