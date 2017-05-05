@@ -53,6 +53,7 @@ namespace cuddly_chainsaw.Models
         [JsonProperty]
         File_entry fileEntry;
 
+
         public Assignment()
         {
             type = 0;
