@@ -16,7 +16,6 @@ namespace cuddly_chainsaw.Models
         string error_code;
     }
 
-
     class ServerResponse<T>
     {
         [JsonProperty]
