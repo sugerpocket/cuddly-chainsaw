@@ -85,7 +85,7 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //登录
-        public Boolean logIn(string userName, string password)
+        public async Task<Boolean> logIn(string userName, string password)
         {
             ResponseError meg = null;
             Models.User user = null;
@@ -98,7 +98,7 @@ namespace cuddly_chainsaw.ViewModels
                     str = s1;
                 };
 
-            Models.User.login(userName, password, action);
+            await User.login(userName, password, action);
 
             if(meg != null)
             {

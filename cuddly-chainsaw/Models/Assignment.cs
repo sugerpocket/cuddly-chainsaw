@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Windows.Storage;
 using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace cuddly_chainsaw.Models
 {
@@ -123,7 +124,7 @@ namespace cuddly_chainsaw.Models
             content = newContent;
         }
 
-        public static async void getAll(Action<ResponseError, List<Assignment>, string> cb)
+        public static async Task getAll(Action<ResponseError, List<Assignment>, string> cb)
         {
             string result = "";
             ServerResponse<List<Assignment>> res = null;
@@ -154,9 +155,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
-        public static async void getOne(string aid, Action<ResponseError, Assignment, string> cb)
+        public static async Task getOne(string aid, Action<ResponseError, Assignment, string> cb)
         {
             string result = "";
             ServerResponse<Assignment> res = null;
@@ -187,9 +189,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
-        public static async void delete(string aid, Action<ResponseError, Assignment, string> cb)
+        public static async Task delete(string aid, Action<ResponseError, Assignment, string> cb)
         {
             string result = null;
             ServerResponse<Assignment> res = null;
@@ -225,9 +228,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
-        public async void save(Action<ResponseError, Assignment, string> cb)
+        public async Task save(Action<ResponseError, Assignment, string> cb)
         {
             string body = JsonConvert.SerializeObject(this, new JsonSerializerSettings
             {
@@ -266,9 +270,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         } 
 
-        public async void update(Action<ResponseError, Assignment, string> cb)
+        public async Task update(Action<ResponseError, Assignment, string> cb)
         {
             string body = JsonConvert.SerializeObject(this, new JsonSerializerSettings
             {
@@ -309,9 +314,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
-        public async void submit(StorageFile file, Action<ResponseError, string, string> cb)
+        public async Task submit(StorageFile file, Action<ResponseError, string, string> cb)
         {
             string result = "";
             ServerResponse<string> res = null;
@@ -344,6 +350,7 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
     }
 }
