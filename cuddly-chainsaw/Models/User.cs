@@ -39,7 +39,7 @@ namespace cuddly_chainsaw.Models
         }
     }
 
-    class User: UserMeta
+    class User : UserMeta
     {
         [JsonProperty]
         private string password = null;
@@ -48,7 +48,7 @@ namespace cuddly_chainsaw.Models
 
         public User() : base() { }
 
-        public User(string Uid, string Username, string Password, string Nickname, string Email, Boolean Role): base(Uid, Username, Nickname, Role)
+        public User(string Uid, string Username, string Password, string Nickname, string Email, Boolean Role) : base(Uid, Username, Nickname, Role)
         {
             email = Email;
             password = Password;
@@ -75,7 +75,7 @@ namespace cuddly_chainsaw.Models
         {
             email = Email;
         }
-        
+
         public string getUsername()
         {
             return username;
@@ -263,7 +263,8 @@ namespace cuddly_chainsaw.Models
                 cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), null, "无法解析服务器返回的信息: " + result);
                 return;
             }
-            if (res.isSuccess()) {
+            if (res.isSuccess())
+            {
                 User data = res.getData();
                 cb(null, data, res.getMessage());
             }
@@ -278,7 +279,7 @@ namespace cuddly_chainsaw.Models
                 cb(null, null, "没有权限的操作");
                 return;
             };
-            
+
             string result = "";
             ServerResponse<List<UserMeta>> res = null;
             try
@@ -316,7 +317,7 @@ namespace cuddly_chainsaw.Models
                 return;
             };
 
-            var body = new Dictionary<string, string>{{ "uid", uid }};
+            var body = new Dictionary<string, string> { { "uid", uid } };
             if (username != null) body["username"] = username;
             if (password != null) body["password"] = password;
             string info = JsonConvert.SerializeObject(body, Formatting.Indented);

@@ -9,18 +9,18 @@ using Windows.UI.Popups;
 
 namespace cuddly_chainsaw.ViewModels
 {
-        /*
-         * 用户类
-         * 分为普通用户及管理员
-         * 普通用户可以查看个人信息
-         * 普通用户可以修改个人信息（修改昵称，修改密码）
-         * 
-         * 管理员可以查看个人信息
-         * 管理员可以修改个人信息（修改昵称，修改密码）
-         * 管理员可以修改所有人的用户名
-         * 
-         * 二者使用role来区分，role为真时是管理员，role为假时是普通用户。
-         */
+    /*
+     * 用户类
+     * 分为普通用户及管理员
+     * 普通用户可以查看个人信息
+     * 普通用户可以修改个人信息（修改昵称，修改密码）
+     * 
+     * 管理员可以查看个人信息
+     * 管理员可以修改个人信息（修改昵称，修改密码）
+     * 管理员可以修改所有人的用户名
+     * 
+     * 二者使用role来区分，role为真时是管理员，role为假时是普通用户。
+     */
     class UserViewModel
     {
         //给管理员提供的用户列表
@@ -34,8 +34,7 @@ namespace cuddly_chainsaw.ViewModels
         public Models.User SelectedUser { get { return selectedUser; } set { this.selectedUser = value; } }
 
         //init()从服务器端得到user信息。
- 
-        public async Task init()
+        public async void init()
         {
             ResponseError meg = null;
             List<UserMeta> user = null;
@@ -57,7 +56,7 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //修改昵称或密码
-        public async Task<Boolean> UpdateforUser(string uid, string nickname, string password)
+        public async Task<bool> UpdateforUser(string uid, string nickname, string password)
         {
             ResponseError meg = null;
             Models.UserMeta user = null;
@@ -101,12 +100,12 @@ namespace cuddly_chainsaw.ViewModels
 
             await User.login(userName, password, action);
 
-            if(meg != null)
+            if (meg != null)
             {
                 var i = new MessageDialog(str).ShowAsync();
             }
 
-            if(user != null)
+            if (user != null)
             {
                 this.selectedUser = user;
             }
@@ -114,30 +113,13 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //注册
-        public async Task logOn(string userName, string password, string nickname, string email)
+        public void logOn(string userName, string password, string nickname, string email)
         {
-            Models.User newUser = new User(userName, password, nickname, email);
-
-            ResponseError meg = null;
-            Models.User user = null;
-            string str = null;
-            Action<ResponseError, Models.User, string> action
-                = delegate (ResponseError re, Models.User user1, string s1)
-                {
-                    meg = re;
-                    user = user1;
-                    str = s1;
-                };
-            await Models.User.save(newUser, "2468", action);
-
-            if (user != null)
-            {
-                this.selectedUser = user;
-            }
+            userItems.Add(new Models.User(userName, password, nickname, email));
         }
 
         //管理员更新用户名
-        public async Task<Boolean> UpdateUserName(string uid, string userName,string password)
+        public async Task<bool> UpdateUserName(string uid, string userName, string password)
         {
             ResponseError meg = null;
             Models.User user = null;
@@ -164,7 +146,7 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //管理员删除用户
-        public async Task  RemoveUser(string uid)
+        public async void RemoveUser(string uid)
         {
             ResponseError meg = null;
             Models.User user = null;
@@ -177,7 +159,7 @@ namespace cuddly_chainsaw.ViewModels
                     str = s1;
                 };
 
-            await this.selectedUser.deleteOne(uid,action);
+            await this.selectedUser.deleteOne(uid, action);
 
             if (meg != null)
             {
