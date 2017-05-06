@@ -116,7 +116,7 @@ namespace cuddly_chainsaw.Models
             return JsonConvert.SerializeObject(this);
         }
 
-        public static async void save(User t_user, string identifyingCode, Action<ResponseError, User, string> cb)
+        public static async Task save(User t_user, string identifyingCode, Action<ResponseError, User, string> cb)
         {
             var body = new Dictionary<string, string>
             {
@@ -153,9 +153,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, user, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
-        public static async void login(string username, string password, Action<ResponseError, User, string> cb)
+        public static async Task login(string username, string password, Action<ResponseError, User, string> cb)
         {
             var body = new Dictionary<string, string>
             {
@@ -189,10 +190,11 @@ namespace cuddly_chainsaw.Models
                 cb(null, user, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
         //user
-        public async void updateProfile(string nickname, string password, Action<ResponseError, UserMeta, string> cb)
+        public async Task updateProfile(string nickname, string password, Action<ResponseError, UserMeta, string> cb)
         {
             if (!this.role)
             {
@@ -230,10 +232,11 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
         //admin
-        public async void deleteOne(string uid, Action<ResponseError, User, string> cb)
+        public async Task deleteOne(string uid, Action<ResponseError, User, string> cb)
         {
             if (!this.role)
             {
@@ -265,9 +268,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
-        public async void getAllUsers(Action<ResponseError, List<UserMeta>, string> cb)
+        public async Task getAllUsers(Action<ResponseError, List<UserMeta>, string> cb)
         {
             if (!this.role)
             {
@@ -301,9 +305,10 @@ namespace cuddly_chainsaw.Models
                 cb(null, list, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
 
-        public async void updateUser(string uid, string username, string password, Action<ResponseError, User, string> cb)
+        public async Task updateUser(string uid, string username, string password, Action<ResponseError, User, string> cb)
         {
             if (!this.role)
             {
@@ -341,6 +346,7 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
         }
     }
 }
