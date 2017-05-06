@@ -30,10 +30,16 @@ namespace cuddly_chainsaw
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            user.logIn("15331060","123456");
-          //  user.init();
+            call();
         }
         ViewModels.UserViewModel user = new ViewModels.UserViewModel();
+
+        public async void call()
+        {
+            await user.logIn("15331060", "123456");
+            await user.init();
+            await user.RemoveUser("590df08e96be3026c743051f");
+        }
         /// <summary>
         /// 在应用程序由最终用户正常启动时进行调用。
         /// 将在启动应用程序以打开特定文件等情况下使用。

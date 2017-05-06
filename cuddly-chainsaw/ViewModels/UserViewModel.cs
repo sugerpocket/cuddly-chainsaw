@@ -34,7 +34,8 @@ namespace cuddly_chainsaw.ViewModels
         public Models.User SelectedUser { get { return selectedUser; } set { this.selectedUser = value; } }
 
         //init()从服务器端得到user信息。
-        public void init()
+ 
+        public async Task init()
         {
             ResponseError meg = null;
             List<UserMeta> user = null;
@@ -46,7 +47,7 @@ namespace cuddly_chainsaw.ViewModels
                     user = userList;
                     str = s1;
                 };
-            this.selectedUser.getAllUsers(action);
+            await this.selectedUser.getAllUsers(action);
 
             if (meg != null)
             {
@@ -56,7 +57,7 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //修改昵称或密码
-        public Boolean UpdateforUser(string uid, string nickname, string password)
+        public async Task<Boolean> UpdateforUser(string uid, string nickname, string password)
         {
             ResponseError meg = null;
             Models.UserMeta user = null;
@@ -69,7 +70,7 @@ namespace cuddly_chainsaw.ViewModels
                     str = s1;
                 };
 
-            this.selectedUser.updateProfile(nickname, password, action);
+            await this.selectedUser.updateProfile(nickname, password, action);
 
             if (meg != null)
             {
@@ -113,13 +114,30 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //注册
-        public void logOn(string userName, string password, string nickname, string email)
+        public async Task logOn(string userName, string password, string nickname, string email)
         {
-            userItems.Add(new Models.User(userName, password, nickname, email));
+            Models.User newUser = new User(userName, password, nickname, email);
+
+            ResponseError meg = null;
+            Models.User user = null;
+            string str = null;
+            Action<ResponseError, Models.User, string> action
+                = delegate (ResponseError re, Models.User user1, string s1)
+                {
+                    meg = re;
+                    user = user1;
+                    str = s1;
+                };
+            await Models.User.save(newUser, "2468", action);
+
+            if (user != null)
+            {
+                this.selectedUser = user;
+            }
         }
 
         //管理员更新用户名
-        public Boolean UpdateUserName(string uid, string userName,string password)
+        public async Task<Boolean> UpdateUserName(string uid, string userName,string password)
         {
             ResponseError meg = null;
             Models.User user = null;
@@ -131,7 +149,7 @@ namespace cuddly_chainsaw.ViewModels
                     user = user1;
                     str = s1;
                 };
-            this.selectedUser.updateUser(uid, userName, password, action);
+            await this.selectedUser.updateUser(uid, userName, password, action);
 
             if (meg != null)
             {
@@ -146,7 +164,7 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //管理员删除用户
-        public void RemoveUser(string uid)
+        public async Task  RemoveUser(string uid)
         {
             ResponseError meg = null;
             Models.User user = null;
@@ -159,7 +177,7 @@ namespace cuddly_chainsaw.ViewModels
                     str = s1;
                 };
 
-            this.selectedUser.deleteOne(uid,action);
+            await this.selectedUser.deleteOne(uid,action);
 
             if (meg != null)
             {
