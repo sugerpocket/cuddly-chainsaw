@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using cuddly_chainsaw.ViewModels;
+using cuddly_chainsaw.Models;
 
 namespace cuddly_chainsaw
 {
@@ -30,16 +32,34 @@ namespace cuddly_chainsaw
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            call();
+            test();
+            //  user.init();
         }
-        ViewModels.UserViewModel user = new ViewModels.UserViewModel();
-
-        public async void call()
+        async void test()
         {
+            Assignment ass1 = new Assignment("test8", "doing", 0, 1, new DateTime(2020, 1, 1));
+            Assignment ass2 = new Assignment("test9", "doing", 0, 1, new DateTime(2022, 1, 1));
+            Assignment ass3 = new Assignment("test10", "done", 0, 1, new DateTime(2033, 1, 1));
+            Assignment ass4 = new Assignment("test11", "done", 0, 1, new DateTime(2035, 1, 1));
+
             await user.logIn("15331060", "123456");
-            await user.init();
-            await user.RemoveUser("590df08e96be3026c743051f");
+            AssignmentViewModel temp = new AssignmentViewModel();
+
+            //add newAssignments
+            temp.newAssignments(ass1);
+            temp.newAssignments(ass2);
+            temp.newAssignments(ass3);
+            temp.newAssignments(ass4);
+            //update Assignments test4
+            ass4.setTitle("ChangedTest4");
+            temp.SelectedAssignment = ass4;
+            temp.updateAssignments();
+            //delete Assignment test3
+            temp.SelectedAssignment = ass3;
+            temp.deleteAssignments();
         }
+
+        ViewModels.UserViewModel user = new ViewModels.UserViewModel();
         /// <summary>
         /// 在应用程序由最终用户正常启动时进行调用。
         /// 将在启动应用程序以打开特定文件等情况下使用。

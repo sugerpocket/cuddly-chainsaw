@@ -124,6 +124,11 @@ namespace cuddly_chainsaw.Models
             content = newContent;
         }
 
+        public bool isEnded()
+        {
+            return (ddl <= DateTime.Now);
+        }
+
         public static async Task getAll(Action<ResponseError, List<Assignment>, string> cb)
         {
             string result = "";
@@ -271,7 +276,7 @@ namespace cuddly_chainsaw.Models
             }
             else cb(res.getError(), null, res.getMessage());
             return;
-        } 
+        }
 
         public async Task update(Action<ResponseError, Assignment, string> cb)
         {
@@ -289,7 +294,7 @@ namespace cuddly_chainsaw.Models
             try
             {
                 result = await Server.getInstance().put("api/assignment/one/" + aid + "/update", body);
-                
+
             }
             catch (COMException e)
             {
