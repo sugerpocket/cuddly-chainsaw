@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using cuddly_chainsaw.ViewModels;
 using cuddly_chainsaw.Models;
+using System.Threading;
 
 namespace cuddly_chainsaw
 {
@@ -33,30 +34,68 @@ namespace cuddly_chainsaw
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             test();
+            
             //  user.init();
         }
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
+        AssignmentViewModel temp;
+
         async void test()
         {
-            Assignment ass1 = new Assignment("test8", "doing", 0, 1, new DateTime(2020, 1, 1));
-            Assignment ass2 = new Assignment("test9", "doing", 0, 1, new DateTime(2022, 1, 1));
-            Assignment ass3 = new Assignment("test10", "done", 0, 1, new DateTime(2033, 1, 1));
-            Assignment ass4 = new Assignment("test11", "done", 0, 1, new DateTime(2035, 1, 1));
+            Assignment ass1 = new Assignment("test12", "doing", 0, 1, new DateTime(2020, 1, 1));
+
+            //Assignment ass2 = new Assignment("test9", "doing", 0, 1, new DateTime(2022, 1, 1));
+            //Assignment ass3 = new Assignment("test10", "done", 0, 1, new DateTime(2033, 1, 1));
+            //Assignment ass4 = new Assignment("test11", "done", 0, 1, new DateTime(2035, 1, 1));
 
             await user.logIn("15331060", "123456");
-            AssignmentViewModel temp = new AssignmentViewModel();
+            DateTime tempTime = DateTime.Now;
+            Boolean flag = true;
+            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
+                if (flag)
+                {
+                    temp = new AssignmentViewModel();
+                    flag = false;
+                }
+            //allDone.Set();
 
             //add newAssignments
-            temp.newAssignments(ass1);
-            temp.newAssignments(ass2);
-            temp.newAssignments(ass3);
-            temp.newAssignments(ass4);
+
+            //allDone.WaitOne();
+
+            //temp.newAssignments(ass2);
+            //temp.newAssignments(ass3);
+            //temp.newAssignments(ass4);
+
             //update Assignments test4
-            ass4.setTitle("ChangedTest4");
-            temp.SelectedAssignment = ass4;
-            temp.updateAssignments();
-            //delete Assignment test3
-            temp.SelectedAssignment = ass3;
-            temp.deleteAssignments();
+            tempTime = DateTime.Now;
+            flag = true;
+            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
+                if(flag)
+                {
+                    flag = await temp.newAssignments(ass1);
+                }
+            flag = true;
+            temp.SelectedAssignment = temp.AllAssignments.Last();
+            temp.SelectedAssignment.setTitle("ChangedTest4");
+            //temp.SelectedAssignment = ass4;
+            tempTime = DateTime.Now;
+            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
+                if(flag)
+                {
+                    flag = await temp.updateAssignments();
+                }
+            flag = true;
+            temp.SelectedAssignment = temp.AllAssignments.First();
+            tempTime = DateTime.Now;
+            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
+                if (flag)
+                {
+                    flag = await temp.deleteAssignments();
+                }
+            ////delete Assignment test3
+            //temp.SelectedAssignment = ass3;
+            //temp.deleteAssignments();
         }
 
         ViewModels.UserViewModel user = new ViewModels.UserViewModel();
