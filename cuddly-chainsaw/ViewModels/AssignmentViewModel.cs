@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using cuddly_chainsaw.Models;
 using Windows.UI.Popups;
 using Windows.Storage;
+using System.Threading;
 
 /***************************************
  * get 所有作业列表
@@ -35,9 +36,10 @@ namespace cuddly_chainsaw.ViewModels
         private ObservableCollection<Models.Assignment> doingAssignments = new ObservableCollection<Models.Assignment>();
         public ObservableCollection<Models.Assignment> DoingAssignments { get { return this.doingAssignments; } }
 
-        //当前在操作的页面
+        //当前在操作的作业
         private Models.Assignment selectedAssignment = default(Models.Assignment);
         public Models.Assignment SelectedAssignment { get { return selectedAssignment; } set { this.selectedAssignment = value; } }
+
 
         public AssignmentViewModel()
         {
@@ -48,11 +50,10 @@ namespace cuddly_chainsaw.ViewModels
         public void InitializeAllAssignments()
         {
             getAllAssignments();
-            getDoingAssignments();
-            getDoneAssignments();
+            
         }
 
-        //根据网络状况，有时可以有时不行……
+        //异步函数，好难
         //获取所有的作业
         public async void getAllAssignments()
         {
@@ -64,32 +65,25 @@ namespace cuddly_chainsaw.ViewModels
                 error = e;
                 allAsg = all;
                 message = msg;
+                if (error != null)
+                {
+                    var i = new MessageDialog(message).ShowAsync();
+                }
+                else
+                {
+                    foreach (Assignment a in allAsg)
+                    {
+                        allAssignments.Add(a);
+                    }
+                    getDoingAssignments();
+                    getDoneAssignments();
+                }
+                //待修改，测试用，之后需要改回到null
+                selectedAssignment = null;
             };
             await Assignment.getAll(cb);
-            if (error != null)
-            {
-                var i = new MessageDialog(message).ShowAsync();
-            }
-            else
-            {
-                foreach (Assignment a in allAsg)
-                {
-                    allAssignments.Add(a);
-                }
-            }
-            selectedAssignment = null;
-            /**********也不可以*************/
-            //string id = "590deaae96be3026c743051b";
-            //Action<ResponseError, Assignment, string> b = delegate (ResponseError e, Assignment a, string msg)
-            //{
-            //    error = e;
-            //    selectedAssignment = a;
-            //    message = msg;
-            //};
-            //await Assignment.getOne(id, b);
         }
-
-        //有待测试
+        
         //已完成的作业
         public void getDoneAssignments()
         {
@@ -101,8 +95,7 @@ namespace cuddly_chainsaw.ViewModels
                 }
             }
         }
-
-        //有待测试
+        
         //未完成的作业
         public void getDoingAssignments()
         {
@@ -114,8 +107,7 @@ namespace cuddly_chainsaw.ViewModels
                 }
             }
         }
-
-        //有待测试
+        
         //提交作业
         public async void submitAssignments(StorageFile file)
         {
@@ -134,82 +126,76 @@ namespace cuddly_chainsaw.ViewModels
                 var i = new MessageDialog(message).ShowAsync();
             }
         }
-
-        //有待修改
+        
         //新建作业
-        public async void newAssignments(Assignment temp)
+        public async Task<Boolean> newAssignments(Assignment temp)
         {
             selectedAssignment = temp;
             ResponseError error = null;
             string message = "";
-            if (temp == null) return;
+            if (temp == null) return false;
             Action<ResponseError, Assignment, string> cb = delegate (ResponseError e, Assignment t, string msg) {
                 error = e;
                 message = msg;
                 temp = t;
-            };
-            await selectedAssignment.save(cb);
-            if (error != null)
-            {
-                var i = new MessageDialog(message).ShowAsync();
-            }
-            else
-            {
-                //从本地中添加新的作业, 需要把数据库全面更新，或者从哪里获取一个ID？？，因为没法从本地直接添加id
-                //有待修改
-                allAssignments.Add(temp);
-                if (temp.isEnded())
+                if (error != null)
                 {
-                    doneAssignments.Add(temp);
+                    var i = new MessageDialog(message).ShowAsync();
                 }
                 else
                 {
-                    doingAssignments.Add(temp);
+                    allAssignments.Clear();
+                    doingAssignments.Clear();
+                    doneAssignments.Clear();
+                    //从本地中添加新的作业, 需要把数据库全面更新，因为没法从本地直接添加id
+                    getAllAssignments();
                 }
-            }
+            };
+            await selectedAssignment.save(cb);
+            return false;
         }
-
-        //有待测试
+        
         //修改当前作业
-        public async void updateAssignments()
+        public async Task<Boolean> updateAssignments()
         {
             Assignment temp = selectedAssignment;
             ResponseError error = null;
             string message = "";
-            if (temp == null) return;
+            if (temp == null) return false;
             Action<ResponseError, Assignment, string> cb = delegate (ResponseError e, Assignment t, string msg)
             {
                 error = e;
                 message = msg;
-                //temp = t;
+                temp = t;
+                if (error != null)
+                {
+                    var i = new MessageDialog(message).ShowAsync();
+                }
+                else
+                {
+                    //从本地中修改当前作业
+                    allAssignments.Remove(selectedAssignment);
+                    allAssignments.Add(temp);
+                    if (doingAssignments.IndexOf(selectedAssignment) != -1)
+                    {
+                        doingAssignments.Remove(selectedAssignment);
+                        doingAssignments.Add(temp);
+                    }
+                    if (doneAssignments.IndexOf(selectedAssignment) != -1)
+                    {
+                        doneAssignments.Remove(selectedAssignment);
+                        doneAssignments.Add(temp);
+                    }
+                    selectedAssignment = temp;
+                }
             };
             await temp.update(cb);
-            if (error != null)
-            {
-                var i = new MessageDialog(message).ShowAsync();
-            }
-            else
-            {
-                //从本地中修改当前作业
-                allAssignments.Remove(selectedAssignment);
-                allAssignments.Add(temp);
-                if (doingAssignments.IndexOf(selectedAssignment) != -1)
-                {
-                    doingAssignments.Remove(selectedAssignment);
-                    doingAssignments.Add(temp);
-                }
-                if (doneAssignments.IndexOf(selectedAssignment) != -1)
-                {
-                    doneAssignments.Remove(selectedAssignment);
-                    doneAssignments.Add(temp);
-                }
-                selectedAssignment = temp;
-            }
+            return false;
         }
 
         //有待测试
         //删除当前作业
-        public async void deleteAssignments()
+        public async Task<Boolean> deleteAssignments()
         {
             ResponseError error = null;
             Assignment asg = selectedAssignment;
@@ -217,7 +203,7 @@ namespace cuddly_chainsaw.ViewModels
             string aid = "";
             if (asg == null)
             {
-                return;
+                return false;
             }
             aid = asg.getAssignmentId();
             Action<ResponseError, Assignment, string> cb = delegate (ResponseError e, Assignment a, string msg)
@@ -225,19 +211,27 @@ namespace cuddly_chainsaw.ViewModels
                 error = e;
                 asg = a;
                 message = msg;
+                if (error != null)
+                {
+                    var i = new MessageDialog(message).ShowAsync();
+                }
+                else
+                {
+                    //从本地中删除当前作业
+                    allAssignments.Remove(selectedAssignment);
+                    if (doingAssignments.IndexOf(selectedAssignment) != -1)
+                    {
+                        doingAssignments.Remove(selectedAssignment);
+                    }
+                    if (doneAssignments.IndexOf(selectedAssignment) != -1)
+                    {
+                        doneAssignments.Remove(selectedAssignment);
+                    }
+                    selectedAssignment = null;
+                }
             };
             await Assignment.delete(aid, cb);
-            if (error != null)
-            {
-                var i = new MessageDialog(message).ShowAsync();
-            }
-            else
-            {
-                //从本地中删除当前作业
-                allAssignments.RemoveAt(allAssignments.IndexOf(asg));
-                if (doingAssignments.IndexOf(asg) != -1) doingAssignments.RemoveAt(doingAssignments.IndexOf(asg));
-                if (doneAssignments.IndexOf(asg) != -1) doneAssignments.RemoveAt(doneAssignments.IndexOf(asg));
-            }
+            return false;
         }
     }
 }
