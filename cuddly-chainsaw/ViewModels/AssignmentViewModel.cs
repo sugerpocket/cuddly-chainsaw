@@ -78,7 +78,6 @@ namespace cuddly_chainsaw.ViewModels
                     getDoingAssignments();
                     getDoneAssignments();
                 }
-                //待修改，测试用，之后需要改回到null
                 selectedAssignment = null;
             };
             await Assignment.getAll(cb);
@@ -108,6 +107,7 @@ namespace cuddly_chainsaw.ViewModels
             }
         }
         
+        //待测试
         //提交作业
         public async void submitAssignments(StorageFile file)
         {
@@ -192,8 +192,7 @@ namespace cuddly_chainsaw.ViewModels
             await temp.update(cb);
             return false;
         }
-
-        //有待测试
+        
         //删除当前作业
         public async Task<Boolean> deleteAssignments()
         {

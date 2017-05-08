@@ -113,6 +113,11 @@ namespace cuddly_chainsaw.Models
         {
             return aid;
         }
+        public string Title { get{ return title; } }
+
+        public DateTime Start { get { return (DateTime)start; } }
+
+        public DateTime DDL { get { return (DateTime)ddl; } }
 
         public void setTitle(string newTitle)
         {

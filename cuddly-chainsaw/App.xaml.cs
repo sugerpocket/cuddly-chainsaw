@@ -33,7 +33,7 @@ namespace cuddly_chainsaw
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            test();
+            //="{StaticResource ResourceKey=Light}"
             
             //  user.init();
         }

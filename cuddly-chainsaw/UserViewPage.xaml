@@ -1,0 +1,132 @@
+﻿<Page
+    x:Class="cuddly_chainsaw.UserViewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:cuddly_chainsaw"
+    xmlns:md="using:cuddly_chainsaw.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="VisualStateMin0">
+                    <VisualState.Setters>
+                        <Setter Target="splitView.DisplayMode" Value="CompactOverlay"/>
+                        <Setter Target="splitView.IsPaneOpen" Value="False" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="VisualStateMin800">
+                    <VisualState.Setters>
+                        <Setter Target="splitView.DisplayMode" Value="CompactInline" />
+                        <Setter Target="splitView.IsPaneOpen" Value="True" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid>
+            <Grid>
+                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250"  Height="720">
+                    <!--导航菜单栏-->
+                    <SplitView.Pane>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="150" />
+                            </Grid.RowDefinitions>
+
+                            <ListView Grid.Row="0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                                <ListViewItem>
+                                    <StackPanel Orientation="Horizontal">
+                                        <AppBarButton x:Name="allA" Icon="ShowBcc" VerticalAlignment="Center" Height="40" Width="40" Click="SpliteView_Click"/>
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="mainPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="home"/>
+                                        <TextBlock Text="主页" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="infoPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="contactInfo" />
+                                        <TextBlock Text="个人信息" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="assignmentPage" Orientation="Horizontal">
+                                        <SymbolIcon Symbol="Add" />
+                                        <TextBlock Text="添加作业" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel  x:Name="userViewPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="people" />
+                                        <TextBlock Text="所有用户" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                            </ListView>
+                            <StackPanel x:Name="userAvatar" Grid.Row="1">
+                                <Image x:Name="avatar" Source="Assets/header.jpeg" Height="100" Width="100" HorizontalAlignment="Left" Margin="10"/>
+                                <TextBlock x:Name="nickname" Text="nickname" Margin="10,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </SplitView.Pane>
+                    <SplitView.Content>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="120"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <AppBarButton Icon="View" Margin="34,20,0,0"></AppBarButton>
+                                <TextBlock Text="用户信息" Margin="30,60,0,0" FontSize="20"/>
+                            </Grid>
+                            <GridView Grid.Row="1" IsItemClickEnabled="True"
+                          ItemsSource="{x:Bind userViewModel.UserItems}">
+                                <GridView.ItemTemplate>
+                                    <DataTemplate x:DataType="md:UserMeta">
+                                        <Grid BorderBrush="Green" Margin="10" BorderThickness="2">
+                                            <Grid Width="180" Margin="10,5,10,5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="24"/>
+                                                    <RowDefinition Height="12"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Grid.Row="0" FontSize="18" Text="{x:Bind Path=Username,Mode=OneWay}" VerticalAlignment="Center" />
+                                                <Ellipse Width="20" Height="20" Grid.Row="1" HorizontalAlignment="Left">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="Assets/icon.jpg"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                                <TextBlock  Grid.Row="1" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.5" Margin="24,0,0,0" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Row="2" FontSize="10" Opacity="0.5" Text="用户"/>
+                                                <AppBarButton Grid.Column="0" Icon="Edit" HorizontalAlignment="Right" Height="34" Width="24" Margin="0,-8,0,0">
+                                                    <AppBarButton.Flyout>
+                                                        <MenuFlyout>
+                                                            <MenuFlyoutItem Text="Edit UserName" Click="EditUsername"/>
+                                                        </MenuFlyout>
+                                                    </AppBarButton.Flyout>
+                                                </AppBarButton>
+                                            </Grid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+                        </Grid>
+                    </SplitView.Content>
+                </SplitView>
+            </Grid>
+        </Grid>
+    </Grid>
+
+
+</Page>

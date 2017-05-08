@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
@@ -26,15 +28,19 @@ namespace cuddly_chainsaw.ViewModels
         //给管理员提供的用户列表
         private ObservableCollection<Models.UserMeta> userItems;
         public ObservableCollection<Models.UserMeta> UserItems { get { return this.userItems; } }
-
         /*
-         * 方便普通用户和管理员修改信息,用户和管理员都指向自身。
+         * 方便管理员修改信息,指向被点击的用户
          */
-        private Models.User selectedUser = default(Models.User);
-        public Models.User SelectedUser { get { return selectedUser; } set { this.selectedUser = value; } }
+        private Models.UserMeta selectedUser = default(Models.UserMeta);
+        public Models.UserMeta SelectedUser { get { return selectedUser; } set { this.selectedUser = value; } }
+
+        /// <summary>
+        /// 指向自身
+        /// </summary>
+        private Models.User currentUser = default(Models.User);
+        public Models.User CurrentUser { get { return currentUser; } set { this.currentUser = value; } }
 
         //init()从服务器端得到user信息。
-
         public async Task init()
         {
             ResponseError meg = null;
@@ -47,7 +53,7 @@ namespace cuddly_chainsaw.ViewModels
                     user = userList;
                     str = s1;
                 };
-            await this.selectedUser.getAllUsers(action);
+            await this.currentUser.getAllUsers(action);
 
             if (meg != null)
             {
@@ -70,7 +76,7 @@ namespace cuddly_chainsaw.ViewModels
                     str = s1;
                 };
 
-            await this.selectedUser.updateProfile(nickname, password, action);
+            await this.currentUser.updateProfile(nickname, password, action);
 
             if (meg != null)
             {
@@ -79,9 +85,10 @@ namespace cuddly_chainsaw.ViewModels
 
             if (user != null)
             {
-                if (nickname != null) this.selectedUser.setNickname(nickname);
-                if (password != null) this.selectedUser.setPassword(password);
+                if (nickname != null) this.currentUser.setNickname(nickname);
+                if (password != null) this.currentUser.setPassword(password);
             }
+
             return (user != null);
         }
 
@@ -108,13 +115,13 @@ namespace cuddly_chainsaw.ViewModels
 
             if (user != null)
             {
-                this.selectedUser = user;
+                this.currentUser = user;
             }
             return (user != null);
         }
 
         //注册
-        public async Task logOn(string userName, string password, string nickname, string email)
+        public async Task logOn(string userName, string password, string nickname, string email, string identifyingCode)
         {
             Models.User newUser = new User(userName, password, nickname, email);
 
@@ -128,11 +135,15 @@ namespace cuddly_chainsaw.ViewModels
                     user = user1;
                     str = s1;
                 };
-            await Models.User.save(newUser, "2468", action);
+            await Models.User.save(newUser, identifyingCode, action);
 
+            if (meg != null)
+            {
+                var i = new MessageDialog(str).ShowAsync();
+            }
             if (user != null)
             {
-                this.selectedUser = user;
+                await logIn(userName, password);
             }
         }
 
@@ -149,7 +160,7 @@ namespace cuddly_chainsaw.ViewModels
                     user = user1;
                     str = s1;
                 };
-            await this.selectedUser.updateUser(uid, userName, password, action);
+            await this.currentUser.updateUser(uid, userName, password, action);
 
             if (meg != null)
             {
@@ -158,8 +169,12 @@ namespace cuddly_chainsaw.ViewModels
             //本地
             if (user != null)
             {
-                this.selectedUser = user;
+                if (this.currentUser.isAdmin() == true)
+                {
+                    UserItems[FindUser(uid)].setUsername(userName);
+                }
             }
+
             return (user != null);
         }
 
@@ -177,7 +192,7 @@ namespace cuddly_chainsaw.ViewModels
                     str = s1;
                 };
 
-            await this.selectedUser.deleteOne(uid, action);
+            await this.currentUser.deleteOne(uid, action);
 
             if (meg != null)
             {
@@ -185,6 +200,25 @@ namespace cuddly_chainsaw.ViewModels
             }
             //本地，集合删除。
             userItems.Remove(user);
+        }
+
+        /// <summary>
+        /// 根据id寻找对应的用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private int FindUser(string id)
+        {
+            int length = UserItems.Count;
+            int i = 0;
+            for (; i < length; i++)
+            {
+                if (UserItems[i].getId() == id)
+                {
+                    break;
+                }
+            }
+            return i;
         }
     }
 }

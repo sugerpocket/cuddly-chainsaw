@@ -1,15 +1,17 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace cuddly_chainsaw.Models
 {
-    class UserMeta
+    class UserMeta : INotifyPropertyChanged
     {
         [JsonProperty]
         protected string username = null;
@@ -37,6 +39,37 @@ namespace cuddly_chainsaw.Models
             uid = Uid;
             role = Role;
         }
+
+        public string getId()
+        {
+            return uid;
+        }
+
+        public string Username
+        {
+            get { return username; }
+            set
+            {
+                username = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            // Raise the PropertyChanged event, passing the name of the property whose value has changed.
+            this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public string Nickname
+        {
+            get { return nickname; }
+        }
+
+        public void setUsername(string userName)
+        {
+            username = userName;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
     }
 
     class User : UserMeta
@@ -76,24 +109,14 @@ namespace cuddly_chainsaw.Models
             email = Email;
         }
 
-        public string getUsername()
-        {
-            return username;
-        }
-
         public string getPassword()
         {
             return password;
         }
 
-        public string getId()
+        public string getEmail()
         {
-            return uid;
-        }
-
-        public string getNickname()
-        {
-            return nickname;
+            return email;
         }
 
         public Boolean isAdmin()
