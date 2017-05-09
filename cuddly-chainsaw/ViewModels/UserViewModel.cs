@@ -35,6 +35,12 @@ namespace cuddly_chainsaw.ViewModels
         public Models.UserMeta SelectedUser { get { return selectedUser; } set { this.selectedUser = value; } }
 
         /// <summary>
+        /// 指向被选中的作业
+        /// </summary>
+        private Models.Assignment selectedAssignment = default(Models.Assignment);
+        public Models.Assignment SelectedAssignment { get { return selectedAssignment; } set { this.selectedAssignment = value; } }
+
+        /// <summary>
         /// 指向自身
         /// </summary>
         private Models.User currentUser = default(Models.User);
@@ -171,7 +177,7 @@ namespace cuddly_chainsaw.ViewModels
             {
                 if (this.currentUser.isAdmin() == true)
                 {
-                    UserItems[FindUser(uid)].setUsername(userName);
+                    UserItems[FindUser(uid)] = (Models.UserMeta)user;
                 }
             }
 
@@ -199,7 +205,7 @@ namespace cuddly_chainsaw.ViewModels
                 var i = new MessageDialog(str).ShowAsync();
             }
             //本地，集合删除。
-            userItems.Remove(user);
+            userItems.RemoveAt(FindUser(uid));
         }
 
         /// <summary>

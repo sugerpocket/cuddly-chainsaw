@@ -93,6 +93,7 @@ namespace cuddly_chainsaw
         private void SpliteView_Click(object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
+            UserModel.SelectedAssignment = null;
         }
 
         /// <summary>

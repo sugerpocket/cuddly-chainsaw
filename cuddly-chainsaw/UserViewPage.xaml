@@ -74,10 +74,6 @@
                                     </StackPanel>
                                 </ListViewItem>
                             </ListView>
-                            <StackPanel x:Name="userAvatar" Grid.Row="1">
-                                <Image x:Name="avatar" Source="Assets/header.jpeg" Height="100" Width="100" HorizontalAlignment="Left" Margin="10"/>
-                                <TextBlock x:Name="nickname" Text="nickname" Margin="10,0"/>
-                            </StackPanel>
                         </Grid>
                     </SplitView.Pane>
                     <SplitView.Content>
@@ -91,28 +87,29 @@
                                 <TextBlock Text="用户信息" Margin="30,60,0,0" FontSize="20"/>
                             </Grid>
                             <GridView Grid.Row="1" IsItemClickEnabled="True"
-                          ItemsSource="{x:Bind userViewModel.UserItems}">
+                          ItemsSource="{x:Bind userViewModel.UserItems}" x:Name="UserGridView" Visibility="Visible">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="md:UserMeta">
-                                        <Grid BorderBrush="Green" Margin="10" BorderThickness="2">
-                                            <Grid Width="180" Margin="10,5,10,5">
+                                        <Grid BorderBrush="Green" Margin="20,10,0,10" BorderThickness="2">
+                                            <Grid Width="140" Margin="10,5,10,5">
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"/>
-                                                    <RowDefinition Height="24"/>
-                                                    <RowDefinition Height="12"/>
+                                                    <RowDefinition Height="36"/>
+                                                    <RowDefinition Height="72"/>
+                                                    <RowDefinition Height="16"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Grid.Row="0" FontSize="18" Text="{x:Bind Path=Username,Mode=OneWay}" VerticalAlignment="Center" />
-                                                <Ellipse Width="20" Height="20" Grid.Row="1" HorizontalAlignment="Left">
+                                                <Ellipse Width="56" Height="56" Grid.Row="1" HorizontalAlignment="Center">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="Assets/icon.jpg"/>
+                                                        <ImageBrush ImageSource="Assets/header.jpeg"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
-                                                <TextBlock  Grid.Row="1" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.5" Margin="24,0,0,0" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Row="2" FontSize="10" Opacity="0.5" Text="用户"/>
+                                                <TextBlock  Grid.Row="2" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.4" Margin="30,0,0,0" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Row="2" FontSize="12" Opacity="0.4" Text="用户"/>
                                                 <AppBarButton Grid.Column="0" Icon="Edit" HorizontalAlignment="Right" Height="34" Width="24" Margin="0,-8,0,0">
                                                     <AppBarButton.Flyout>
                                                         <MenuFlyout>
-                                                            <MenuFlyoutItem Text="Edit UserName" Click="EditUsername"/>
+                                                            <MenuFlyoutItem Text="修改用户名" Click="EditUser"/>
+                                                            <MenuFlyoutItem Text="删除用户" Click="DeleteUser"/>
                                                         </MenuFlyout>
                                                     </AppBarButton.Flyout>
                                                 </AppBarButton>
@@ -121,6 +118,20 @@
                                     </DataTemplate>
                                 </GridView.ItemTemplate>
                             </GridView>
+                            <Grid Grid.Row="1" Visibility="Collapsed" x:Name="EditUserInfo">
+                                <TextBlock Text="原学号为：" Margin="10"/>
+                                <TextBlock Name="OriginalID_1" Width="150" Height="32" Margin="-170,-470,90,90"/>
+                                <TextBlock Text="更改为:" Margin="10,60,0,0"/>
+                                <TextBox Name="ID" Width="150" Height="32" Margin="-170,-370,90,90"/>
+                                <Button Content="确认" Click="EditUsername" Margin="10,111,0,457"/>
+                                <Button Content="取消" Click="CancelEdit" Margin="91,111,0,457"/>
+                            </Grid>
+                            <Grid Grid.Row="1" Visibility="Collapsed" x:Name="DeleteUserinfo">
+                                <TextBlock Text="确定删除学生：" Margin="10"/>
+                                <TextBlock Name="OriginalID_2" Width="150" Height="32" Margin="-120,-466,90,90"/>
+                                <Button Content="确认" Click="RemoveUser" Margin="171,86,0,482"/>
+                                <Button Content="取消" Click="CancelDelete" Margin="260,86,0,482"/>
+                            </Grid>
                         </Grid>
                     </SplitView.Content>
                 </SplitView>

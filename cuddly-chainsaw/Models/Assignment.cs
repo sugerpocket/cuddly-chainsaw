@@ -73,7 +73,7 @@ namespace cuddly_chainsaw.Models
             this.type = type;
             this.week = week;
             ddl = deadline;
-            start = null;
+            start = DateTime.Now;
             aid = null;
             fileEntry = new File_entry();
         }
@@ -85,7 +85,7 @@ namespace cuddly_chainsaw.Models
             this.type = type;
             this.week = week;
             ddl = deadline;
-            start = null;
+            start = DateTime.Now;
             aid = null;
             this.fileEntry = fileEntry;
         }
@@ -117,7 +117,7 @@ namespace cuddly_chainsaw.Models
 
         public DateTime Start { get { return (DateTime)start; } }
 
-        public DateTime DDL { get { return (DateTime)ddl; } }
+        public DateTime DDL { get { return (DateTime)ddl; } set { ddl = value; } }
 
         public void setTitle(string newTitle)
         {
