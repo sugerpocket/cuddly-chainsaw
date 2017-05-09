@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -34,7 +35,8 @@ namespace cuddly_chainsaw.Models
         {
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("Accept", "application/json;odata=verbose");
-            location = "http://www.sugerpocket.cn:3005/";
+            client.DefaultRequestHeaders.IfModifiedSince = DateTime.Now;
+            location = "http://localhost:3005/";
         }
 
         /// <summary>
