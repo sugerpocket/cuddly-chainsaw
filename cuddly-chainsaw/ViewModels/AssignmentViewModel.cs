@@ -47,15 +47,14 @@ namespace cuddly_chainsaw.ViewModels
         }
 
         //获取所有作业的信息，初始化allAssignments, doingAssignments, doineAssignments
-        public void InitializeAllAssignments()
+        public async void InitializeAllAssignments()
         {
-            getAllAssignments();
-            
-        }
+            await getAllAssignments();
 
-        //异步函数，好难
+        }
+        
         //获取所有的作业
-        public async void getAllAssignments()
+        public async Task getAllAssignments()
         {
             ResponseError error = null;
             List<Assignment> allAsg = null;
@@ -107,9 +106,8 @@ namespace cuddly_chainsaw.ViewModels
             }
         }
         
-        //待测试
         //提交作业
-        public async void submitAssignments(StorageFile file)
+        public async Task<Boolean> submitAssignments(StorageFile file)
         {
             Assignment temp = selectedAssignment;
             ResponseError error = null;
@@ -124,7 +122,9 @@ namespace cuddly_chainsaw.ViewModels
             if (error != null)
             {
                 var i = new MessageDialog(message).ShowAsync();
+                return false;
             }
+            return true;
         }
         
         //新建作业
@@ -148,10 +148,11 @@ namespace cuddly_chainsaw.ViewModels
                     doingAssignments.Clear();
                     doneAssignments.Clear();
                     //从本地中添加新的作业, 需要把数据库全面更新，因为没法从本地直接添加id
-                    getAllAssignments();
                 }
             };
             await selectedAssignment.save(cb);
+            await getAllAssignments();
+            SelectedAssignment = temp;
             return false;
         }
         

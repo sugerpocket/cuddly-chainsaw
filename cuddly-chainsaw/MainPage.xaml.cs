@@ -50,10 +50,11 @@ namespace cuddly_chainsaw
             else
             {
                 UserModel = new UserViewModel();
+                //测试用，之后应该删除
+                await UserModel.logIn("15331060", "123456");
+                await UserModel.init();
             }
-            //测试用，之后应该删除
-            await UserModel.logIn("15331060", "123456");
-            
+
             AssignmentModel = new AssignmentViewModel();
             this.InitializeComponent();
             if (UserModel.CurrentUser == null || !UserModel.CurrentUser.isAdmin())
@@ -61,17 +62,6 @@ namespace cuddly_chainsaw
                 assignmentPage.Visibility = Visibility.Collapsed;
                 userViewPage.Visibility = Visibility.Collapsed;
             }
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-
-        }
-
-        private void SpliteView_Click(object sender, RoutedEventArgs e)
-        {
-            splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
-            //userAvatar.Visibility = (userAvatar.Visibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         /// <summary>
@@ -90,23 +80,31 @@ namespace cuddly_chainsaw
             if (temp == mainPage)
             {
                 root.Navigate(typeof(MainPage), UserModel);
-            } else if(temp == infoPage)
+            }
+            else if (temp == infoPage)
             {
                 root.Navigate(typeof(InfoPage), UserModel);
-            } else if(temp == assignmentPage)
+            }
+            else if (temp == assignmentPage)
             {
-                AssignmentModel.SelectedAssignment = null;
+                UserModel.SelectedAssignment = null;
                 root.Navigate(typeof(AssignmentPage), UserModel);
             }
-            else if(temp == userViewPage)
+            else if (temp == userViewPage)
             {
                 root.Navigate(typeof(UserViewPage), UserModel);
             }
         }
 
+
+        private void SpliteView_Click(object sender, RoutedEventArgs e)
+        {
+            splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
+        }
+
         private void Assignment_Clicked(object sender, ItemClickEventArgs e)
         {
-            AssignmentModel.SelectedAssignment = (Assignment)e.ClickedItem;
+            UserModel.SelectedAssignment = (Assignment)e.ClickedItem;
             Frame root = Window.Current.Content as Frame;
             root.Navigate(typeof(AssignmentPage), UserModel);
         }

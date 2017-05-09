@@ -36,7 +36,7 @@ namespace cuddly_chainsaw.Models
             client = new HttpClient();
             client.DefaultRequestHeaders.Add("Accept", "application/json;odata=verbose");
             client.DefaultRequestHeaders.IfModifiedSince = DateTime.Now;
-            location = "http://localhost:3005/";
+            location = "http://www.sugerpocket.cn:3005/";
         }
 
         /// <summary>

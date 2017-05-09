@@ -6,9 +6,108 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     RequestedTheme="Light"
+    xmlns:cvt="using:cuddly_chainsaw.Converters"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <cvt:TimeConverter x:Key="timeCvt" />
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="VisualStateMin0">
+                    <VisualState.Setters>
+                        <Setter Target="splitView.DisplayMode" Value="CompactOverlay"/>
+                        <Setter Target="splitView.IsPaneOpen" Value="False" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="VisualStateMin800">
+                    <VisualState.Setters>
+                        <Setter Target="splitView.DisplayMode" Value="CompactInline" />
+                        <Setter Target="splitView.IsPaneOpen" Value="True" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
+        <Grid>
+            <Grid>
+                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250"  Height="720">
+                    <!--导航菜单栏-->
+                    <SplitView.Pane>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="150" />
+                            </Grid.RowDefinitions>
+
+                            <ListView Grid.Row="0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                                <ListViewItem>
+                                    <StackPanel Orientation="Horizontal">
+                                        <AppBarButton x:Name="allA" Icon="ShowBcc" VerticalAlignment="Center" Height="40" Width="40" Click="SpliteView_Click"/>
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="mainPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="home"/>
+                                        <TextBlock Text="主页" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="infoPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="contactInfo" />
+                                        <TextBlock Text="个人信息" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="assignmentPage" Orientation="Horizontal">
+                                        <SymbolIcon Symbol="Add" />
+                                        <TextBlock Text="添加作业" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel  x:Name="userViewPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="people" />
+                                        <TextBlock Text="所有用户" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                            </ListView>
+                        </Grid>
+                    </SplitView.Pane>
+                    <!--页面需要显示的内容-->
+                    <SplitView.Content>
+                        <Grid x:Name="AssignmentBox" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="textBlock" Grid.Row="0" Text="Title : " Style="{StaticResource HeaderTextBlockStyle}"/>
+                            <Grid Grid.Row="1" >
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                                    <StackPanel  Width="440" Margin="0,0,40,0">
+                                        <Image Source="Assets/doing.png" Width="160" Height="160" Stretch="UniformToFill" Name="backgroundImage"/>
+                                        <AppBarButton Icon="ReShare" HorizontalAlignment="Right" Click="shareButton_Click" Height="40"/>
+                                        <TextBox Width="350" Header="Title" Margin="0,8,0,0" Name="titleTextBox" IsReadOnly="False" />
+                                        <TextBox Width="350" Height="96" Margin="0,8,0,0" Header="Details" Name="detailsTextBox" IsReadOnly="False" />
+                                        <DatePicker Width="350" Margin="0,8,0,0" Header="开始时间：" HorizontalAlignment="Center" Name="startBox" IsEnabled="False" />
+                                        <DatePicker Width="350" Margin="0,8,0,0" Header="结束时间：" HorizontalAlignment="Center" Name="ddlBox" IsEnabled="True" />
+                                        <RelativePanel Width="350" Margin="0,20,0,0">
+                                            <AppBarButton x:Name="createButton" Icon="Add" Click="createButton_Click" />
+                                            <AppBarButton x:Name="selectFileButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="selectFileButton_Click" />
+                                        </RelativePanel>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
+                    </SplitView.Content>
+                </SplitView>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
