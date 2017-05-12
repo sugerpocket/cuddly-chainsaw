@@ -65,6 +65,11 @@ namespace cuddly_chainsaw.Models
             get { return nickname; }
         }
 
+        public string UId
+        {
+            get { return uid; }
+        }
+
         public void setUsername(string userName)
         {
             username = userName;
@@ -385,6 +390,15 @@ namespace cuddly_chainsaw.Models
             catch (COMException e)
             {
                 cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), "无法连接服务器");
+                return;
+            }
+            try
+            {
+                res = JsonConvert.DeserializeObject<ServerResponse<string>>(result);
+            }
+            catch (Exception e)
+            {
+                cb(new ResponseError("BAD_DATA", "无法解析服务器返回的信息"), "无法解析服务器返回的信息: " + result);
                 return;
             }
             if (res.isSuccess())
