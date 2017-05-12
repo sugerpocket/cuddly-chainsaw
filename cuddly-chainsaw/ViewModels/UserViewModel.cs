@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Popups;
 
 namespace cuddly_chainsaw.ViewModels
@@ -206,6 +207,27 @@ namespace cuddly_chainsaw.ViewModels
             }
             //本地，集合删除。
             userItems.RemoveAt(FindUser(uid));
+        }
+
+        /// <summary>
+        /// 修改自身的头像
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="sf"></param>
+        /// <returns></returns>
+        public async Task<Boolean> UpdateAvatar(StorageFile sf)
+        {
+            ResponseError meg = null;
+            string str = null;
+            Action<ResponseError,string> action
+                = delegate (ResponseError re, string s1)
+                {
+                    meg = re;
+                    str = s1;
+                };
+            await this.currentUser.updateAvatar(sf, action);
+            var i = new MessageDialog(str).ShowAsync();
+            return (meg == null);
         }
 
         /// <summary>
