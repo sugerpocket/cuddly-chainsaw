@@ -87,7 +87,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="textBlock" Grid.Row="0" Text="Title" Margin="10,0,0,0" Style="{StaticResource HeaderTextBlockStyle}"/>
+                            <TextBlock x:Name="textBlock" Grid.Row="0" Text="Title : " Style="{StaticResource HeaderTextBlockStyle}"/>
                             <Grid Grid.Row="1" >
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" >
                                     <StackPanel  Width="440" Margin="0,0,40,0">
