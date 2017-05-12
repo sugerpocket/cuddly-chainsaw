@@ -105,13 +105,17 @@
                                         <AppBarButton Icon="Accept" Click="doneAssignmentsButton_Click"/>
                                         <TextBlock Text="已结束" HorizontalAlignment="Center" />
                                     </StackPanel>
+                                    <StackPanel Margin="20,0,20,0">
+                                        <AppBarButton Icon="View" />
+                                        <TextBlock Text="用户信息" />
+                                    </StackPanel>
+                                    <StackPanel >
+                                        <Image Source="Assets/header.jpeg" Height="60"/>
+                                        <TextBlock Text="{Binding UserModel.SelectedUser.Nickname}" />
+                                    </StackPanel>
                                 </StackPanel>
-                                <!--<StackPanel Orientation="Horizontal" Margin="316,0,0,0">
-                                    <Image Source="Assets/header.jpeg" Height="60"/>
-                                    <TextBlock Text="{Binding UserModel.CurrentUser.Nickname}" />
-                                </StackPanel>-->
                                 <Grid >
-
+                                   
                                 </Grid>
                             </Grid>
                             <Grid Grid.Row="1">
