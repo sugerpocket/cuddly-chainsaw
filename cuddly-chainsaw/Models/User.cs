@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace cuddly_chainsaw.Models
 {
@@ -370,6 +371,27 @@ namespace cuddly_chainsaw.Models
                 cb(null, data, res.getMessage());
             }
             else cb(res.getError(), null, res.getMessage());
+            return;
+        }
+
+        public async Task updateAvatar(StorageFile avatar, Action<ResponseError, string> cb)
+        {
+            string result = "";
+            ServerResponse<string> res = null;
+            try
+            {
+                result = await Server.getInstance().file("api/user/avatar", avatar);
+            }
+            catch (COMException e)
+            {
+                cb(new ResponseError("NETWORK_ERROR", "无法连接服务器"), "无法连接服务器");
+                return;
+            }
+            if (res.isSuccess())
+            {
+                cb(null, res.getMessage());
+            }
+            else cb(res.getError(), res.getMessage());
             return;
         }
     }
