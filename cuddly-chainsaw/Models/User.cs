@@ -70,6 +70,11 @@ namespace cuddly_chainsaw.Models
             get { return uid; }
         }
 
+        public bool IsAdmin
+        {
+            get { return role; }
+        }
+
         public void setUsername(string userName)
         {
             username = userName;

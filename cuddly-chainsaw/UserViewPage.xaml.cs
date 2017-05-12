@@ -27,7 +27,6 @@ namespace cuddly_chainsaw
     {
         public UserViewPage()
         {
-
         }
 
         ViewModels.UserViewModel userViewModel { get; set; }
@@ -125,6 +124,39 @@ namespace cuddly_chainsaw
         {
             splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
             //userAvatar.Visibility = (userAvatar.Visibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        /// <summary>
+        /// TEST 下面只是一个测试能否修改头像的函数
+        /// BUG 出现的主要是管理员修改完，并没有同步更新。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public async void select(object sender, RoutedEventArgs e)
+        {
+            // 设置文件选择器
+            Windows.Storage.Pickers.FileOpenPicker open = new Windows.Storage.Pickers.FileOpenPicker();
+            open.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+            open.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+
+            // 过滤以包括文件类型的示例子集。
+            open.FileTypeFilter.Clear();
+            open.FileTypeFilter.Add(".png");
+            open.FileTypeFilter.Add(".jpeg");
+            open.FileTypeFilter.Add(".jpg");
+
+            // 打开文件选择器
+            Windows.Storage.StorageFile file = await open.PickSingleFileAsync();
+
+            // 如果用户取消则file为null
+            if (file != null)
+            {
+                var temp = file;
+                using (Windows.Storage.Streams.IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                {
+                    await userViewModel.UpdateAvatar(temp);
+                }
+            }
         }
     }
 }

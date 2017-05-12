@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Navigation;
 using cuddly_chainsaw.ViewModels;
 using cuddly_chainsaw.Models;
 using System.Threading;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
 
 namespace cuddly_chainsaw
 {
@@ -34,8 +36,9 @@ namespace cuddly_chainsaw
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             //="{StaticResource ResourceKey=Light}"
-            
+
             //  user.init();
+            
         }
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         AssignmentViewModel temp;
@@ -48,7 +51,7 @@ namespace cuddly_chainsaw
             //Assignment ass3 = new Assignment("test10", "done", 0, 1, new DateTime(2033, 1, 1));
             //Assignment ass4 = new Assignment("test11", "done", 0, 1, new DateTime(2035, 1, 1));
 
-            await user.logIn("15331060", "123456");
+            //await user.logIn("15331060", "123456");
             DateTime tempTime = DateTime.Now;
             Boolean flag = true;
             while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
@@ -139,7 +142,8 @@ namespace cuddly_chainsaw
                     // 当导航堆栈尚未还原时，导航到第一页，
                     // 并通过将所需信息作为导航参数传入来配置
                     // 参数
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    //rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(LoginPage), e.Arguments);
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();

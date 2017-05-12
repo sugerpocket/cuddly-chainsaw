@@ -19,6 +19,8 @@ using Newtonsoft.Json.Converters;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using cuddly_chainsaw.ViewModels;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 /// <summary>
@@ -41,7 +43,7 @@ namespace cuddly_chainsaw
         {
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null && e.Parameter.GetType() == typeof(UserViewModel))
             {
@@ -51,8 +53,8 @@ namespace cuddly_chainsaw
             {
                 UserModel = new UserViewModel();
                 //测试用，之后应该删除
-                await UserModel.logIn("15331060", "123456");
-                await UserModel.init();
+                //await UserModel.logIn("15331060", "123456");
+                //await UserModel.init();
             }
 
             AssignmentModel = new AssignmentViewModel();
@@ -61,7 +63,13 @@ namespace cuddly_chainsaw
             {
                 assignmentPage.Visibility = Visibility.Collapsed;
                 userViewPage.Visibility = Visibility.Collapsed;
+                if (UserModel.CurrentUser == null)
+                {
+                    infoPage.Visibility = Visibility.Collapsed;
+                }
             }
+
+            
         }
 
         /// <summary>
@@ -113,6 +121,8 @@ namespace cuddly_chainsaw
         {
             DoingBox.Visibility = Visibility.Visible;
             DoneBox.Visibility = Visibility.Collapsed;
+
+            
         }
 
         private void doneAssignmentsButton_Click(object sender, RoutedEventArgs e)

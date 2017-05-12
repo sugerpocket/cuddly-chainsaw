@@ -5,9 +5,115 @@
     xmlns:local="using:cuddly_chainsaw"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    RequestedTheme="Light"
+    xmlns:md="using:cuddly_chainsaw.Models"
+    xmlns:cvt="using:cuddly_chainsaw.Converters"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <cvt:TimeConverter x:Key="timeCvt" />
+        <cvt:UriConverter x:Key="urlCvt"/>
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="VisualStateMin0">
+                    <VisualState.Setters>
+                        <Setter Target="splitView.DisplayMode" Value="CompactOverlay"/>
+                        <Setter Target="splitView.IsPaneOpen" Value="False" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="VisualStateMin800">
+                    <VisualState.Setters>
+                        <Setter Target="splitView.DisplayMode" Value="CompactInline" />
+                        <Setter Target="splitView.IsPaneOpen" Value="True" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
+        <Grid>
+            <Grid>
+                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250"  >
+                    <!--导航菜单栏-->
+                    <SplitView.Pane>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="150" />
+                            </Grid.RowDefinitions>
+
+                            <ListView Grid.Row="0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                                <ListViewItem>
+                                    <StackPanel Orientation="Horizontal">
+                                        <AppBarButton x:Name="allA" Icon="ShowBcc" VerticalAlignment="Center" Height="40" Width="40" Click="SpliteView_Click"/>
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="mainPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="home"/>
+                                        <TextBlock Text="主页" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="infoPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="contactInfo" />
+                                        <TextBlock Text="个人信息" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel x:Name="assignmentPage" Orientation="Horizontal">
+                                        <SymbolIcon Symbol="Add" />
+                                        <TextBlock Text="添加作业" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel  x:Name="userViewPage" Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="people" />
+                                        <TextBlock Text="所有用户" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ListViewItem>
+                            </ListView>
+                        </Grid>
+                    </SplitView.Pane>
+                    <!--页面需要显示的内容-->
+                    <SplitView.Content>
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.4*"/>
+                                <RowDefinition Height="0.6*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.6*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text=" Info" Grid.Row="0" Foreground="#FF8CBF26" TextAlignment="Center" FontSize="40" VerticalAlignment="Top" FontFamily="Segoe UI Symbol" HorizontalAlignment="Left" />
+                            <Ellipse Width="120" Height="120" Grid.Row="1" HorizontalAlignment="Center" Tapped="Ellipse_Tapped">
+                                <Ellipse.Fill>
+                                    <ImageBrush x:Name="ava"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBox x:Name="username" Grid.Row="2" Text="" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="用户名" BorderThickness="0,0,0,1" IsHitTestVisible="False" IsReadOnly="True" />
+                            <TextBox x:Name="mail" Grid.Row="3" Text="" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="邮箱" BorderThickness="0,0,0,1" IsReadOnly="True" IsHitTestVisible="False" />
+                            <TextBox x:Name="nickname" Grid.Row="4" Text="" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="昵称" BorderThickness="0,0,0,1" />
+                            <PasswordBox x:Name="password" Grid.Row="5" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="密码" BorderThickness="0,0,0,1"/>
+                            <Button x:Name="sure" Grid.Row="6" Content="保存修改" HorizontalAlignment="Center" Width="350" Click="sure_Click" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
+                                <Button.Background>
+                                    <SolidColorBrush Color="#FF8CBF26"/>
+                                </Button.Background>
+                            </Button>
+                        </Grid>
+                    </SplitView.Content>
+                </SplitView>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

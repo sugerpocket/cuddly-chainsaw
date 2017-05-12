@@ -219,7 +219,7 @@ namespace cuddly_chainsaw.ViewModels
         {
             ResponseError meg = null;
             string str = null;
-            Action<ResponseError,string> action
+            Action<ResponseError, string> action
                 = delegate (ResponseError re, string s1)
                 {
                     meg = re;

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tile>
+  <visual>
+    <binding template="TileSmall">
+      <image src="Assets/header.jpeg" placement="background"/>
+      <text>Title</text>
+    </binding>
+
+    <binding template="TileMedium">
+      <image src="Assets/header.jpeg" placement="background"/>
+      <text>Title</text>
+      <text hint-style="6">endTime</text>
+    </binding>
+    
+    <binding template="TileWide">
+      <image src="Assets\header.jpeg" placement="background"/>
+      <text>Title</text>
+      <text hint-style="6">endTime</text>
+    </binding>
+
+    <binding template="TileLarge">
+      <image src="Assets\header.jpeg" placement="background"/>
+      <text>Title</text>
+      <text hint-style="6">endTime</text>
+    </binding>
+  </visual>
+</tile>

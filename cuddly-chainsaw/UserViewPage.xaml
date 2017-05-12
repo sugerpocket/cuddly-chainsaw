@@ -6,7 +6,13 @@
     xmlns:md="using:cuddly_chainsaw.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cvt ="using:cuddly_chainsaw.Converters"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <cvt:UriConverter x:Key="uricvt"/>
+        <cvt:RoleConverter x:Key="rolecvt"/>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
@@ -100,7 +106,7 @@
                                                 <TextBlock Grid.Row="0" FontSize="18" Text="{x:Bind Path=Username,Mode=OneWay}" VerticalAlignment="Center" />
                                                 <Ellipse Width="56" Height="56" Grid.Row="1" HorizontalAlignment="Center">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="Assets/header.jpeg"/>
+                                                        <ImageBrush x:Name="ImageToload" ImageSource="{Binding UId,Converter={StaticResource uricvt},Mode=OneWay}"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
                                                 <TextBlock  Grid.Row="2" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.4" Margin="30,0,0,0" VerticalAlignment="Center"/>
