@@ -106,13 +106,16 @@ namespace cuddly_chainsaw
             string psw = password.Password;
             string uid = this.UserModel.CurrentUser.getId();
             await this.UserModel.UpdateforUser(uid, nick, psw);
-            await UserModel.UpdateAvatar(file);
+            if (file != null)
+            {
+                await UserModel.UpdateAvatar(file);
+            }
         }
 
         //更新显示的图片
         private async void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Windows.Storage.Pickers.FileOpenPicker openPicker = 
+            Windows.Storage.Pickers.FileOpenPicker openPicker =
                 new Windows.Storage.Pickers.FileOpenPicker();
             openPicker.SuggestedStartLocation =
                 Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
