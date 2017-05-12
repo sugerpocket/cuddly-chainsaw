@@ -8,6 +8,7 @@
     RequestedTheme="Light"
     xmlns:md="using:cuddly_chainsaw.Models"
     xmlns:cvt="using:cuddly_chainsaw.Converters"
+    xmlns:iconPacks="using:MahApps.Metro.IconPacks"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -39,7 +40,7 @@
 
         <Grid>
             <Grid>
-                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250"  Height="720">
+                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250" Margin="0,0,0,0">
                     <!--导航菜单栏-->
                     <SplitView.Pane>
                         <Grid>
@@ -51,7 +52,11 @@
                             <ListView Grid.Row="0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
                                 <ListViewItem>
                                     <StackPanel Orientation="Horizontal">
-                                        <AppBarButton x:Name="allA" Icon="ShowBcc" VerticalAlignment="Center" Height="40" Width="40" Click="SpliteView_Click"/>
+                                        <AppBarButton x:Name="allA" Click="SpliteView_Click" Height="20" Width="20">
+                                            <AppBarButton.Content>
+                                                <iconPacks:PackIconOcticons Kind="Grabber" Margin="0,-14,0,0" Width="20" Height="20"></iconPacks:PackIconOcticons>
+                                            </AppBarButton.Content>
+                                        </AppBarButton>
                                     </StackPanel>
                                 </ListViewItem>
                                 <ListViewItem>
