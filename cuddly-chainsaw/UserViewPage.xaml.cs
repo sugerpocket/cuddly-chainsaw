@@ -101,20 +101,20 @@ namespace cuddly_chainsaw
         {
             var temp = (StackPanel)e.ClickedItem;
             Frame root = Window.Current.Content as Frame;
-            if (temp == mainPage)
+            if (temp.Parent == mainPage)
             {
                 root.Navigate(typeof(MainPage), userViewModel);
             }
-            else if (temp == infoPage)
+            else if (temp.Parent == infoPage)
             {
                 root.Navigate(typeof(InfoPage), userViewModel);
             }
-            else if (temp == assignmentPage)
+            else if (temp.Parent == assignmentPage)
             {
                 AssignmentModel.SelectedAssignment = null;
                 root.Navigate(typeof(AssignmentPage), userViewModel);
             }
-            else if (temp == userViewPage)
+            else if (temp.Parent == userViewPage)
             {
                 root.Navigate(typeof(UserViewPage), userViewModel);
             }

@@ -62,26 +62,26 @@
                                         </AppBarButton>
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel x:Name="mainPage" Orientation="Horizontal" >
-                                        <SymbolIcon Symbol="Library"/>
+                                <ListViewItem x:Name="mainPage">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="Library"></SymbolIcon>
                                         <TextBlock Text="所有作业" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel x:Name="infoPage" Orientation="Horizontal" >
+                                <ListViewItem x:Name="infoPage" >
+                                    <StackPanel Orientation="Horizontal" >
                                         <SymbolIcon Symbol="contactInfo" />
                                         <TextBlock Text="个人信息" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel x:Name="assignmentPage" Orientation="Horizontal">
+                                <ListViewItem x:Name="assignmentPage">
+                                    <StackPanel Orientation="Horizontal">
                                         <SymbolIcon Symbol="Add" />
                                         <TextBlock Text="添加作业" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel  x:Name="userViewPage" Orientation="Horizontal" >
+                                <ListViewItem  x:Name="userViewPage">
+                                    <StackPanel  Orientation="Horizontal" >
                                         <SymbolIcon Symbol="people" />
                                         <TextBlock Text="所有用户" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>

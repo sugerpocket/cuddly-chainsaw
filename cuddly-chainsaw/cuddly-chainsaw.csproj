@@ -98,7 +98,6 @@
     <Compile Include="AssignmentPage.xaml.cs">
       <DependentUpon>AssignmentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\RoleConverter.cs" />
     <Compile Include="Converters\TimeConverter.cs" />
     <Compile Include="Converters\TypeImageConverter.cs" />
     <Compile Include="Converters\UriConverter.cs" />
