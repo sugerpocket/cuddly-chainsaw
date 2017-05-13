@@ -19,6 +19,7 @@ using Newtonsoft.Json.Converters;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using cuddly_chainsaw.ViewModels;
+using System.Collections.ObjectModel;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
@@ -33,12 +34,28 @@ namespace cuddly_chainsaw
         AssignmentViewModel AssignmentModel;
         UserViewModel UserModel;
 
+        static Type currentPage;
+
+        ObservableCollection<bool> navSelect = new ObservableCollection<bool>();
+
         public static Frame view = null;
 
         public MainPage()
         {
             this.InitializeComponent();
             MainPage.view = this.viewFrame;
+            viewFrame.Navigated += viewChange;
+            navSelect.Add(true);
+            navSelect.Add(false);
+            navSelect.Add(false);
+            navSelect.Add(false);
+            navSelect.Add(false);
+            navSelect.Add(false);
+        }
+
+        private void viewChange(object sender, NavigationEventArgs e)
+        {
+            currentPage = viewFrame.CurrentSourcePageType;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -68,6 +85,8 @@ namespace cuddly_chainsaw
             }
         }
 
+        
+
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -95,6 +114,16 @@ namespace cuddly_chainsaw
         private void SpliteView_Click(object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
+        }
+
+        private void ToggleHand(object sender, PointerRoutedEventArgs e)
+        {
+            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
+        }
+
+        private void TogglePointer(object sender, PointerRoutedEventArgs e)
+        {
+            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
         }
     }
 

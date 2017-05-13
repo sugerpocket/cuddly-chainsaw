@@ -15,30 +15,7 @@
         <cvt:UriConverter x:Key="uricvt"/>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="VisualStateMin0">
-                    <VisualState.Setters>
-                        <Setter Target="splitView.DisplayMode" Value="CompactOverlay"/>
-                        <Setter Target="splitView.IsPaneOpen" Value="False" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState x:Name="VisualStateMin800">
-                    <VisualState.Setters>
-                        <Setter Target="splitView.DisplayMode" Value="CompactInline" />
-                        <Setter Target="splitView.IsPaneOpen" Value="True" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
+    <Grid>
         <Grid>
             <Grid>
                 <Grid>
@@ -51,35 +28,54 @@
                         <TextBlock Text="用户信息" Margin="30,60,0,0" FontSize="20"/>
                     </Grid>
                     <GridView Grid.Row="1" IsItemClickEnabled="True"
-                          ItemsSource="{x:Bind userViewModel.UserItems}" x:Name="UserGridView" Visibility="Visible">
+                          ItemsSource="{x:Bind userViewModel.UserItems}" x:Name="UserGridView" BorderBrush="Transparent" Visibility="Visible" Padding="20,0,20,0">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GridViewItem">
+                                            <ContentPresenter>
+                                            </ContentPresenter>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GridView.ItemContainerStyle>
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="md:UserMeta">
-                                <xp:Shadow Z_Depth="1" CornerRadius="10" Width="180">
-                                    <Grid Background="White" Width="160" Margin="2,2,2,2" CornerRadius="10">
+                                <Grid Background="White" Width="160" BorderBrush="Transparent" Margin="10,20,10,20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="150"/>
+                                        <RowDefinition Height="48"/>
+                                        <RowDefinition Height="10"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="128"/>
-                                            <RowDefinition Height="48"/>
-                                            <RowDefinition Height="36"/>
+                                            <RowDefinition Height="28"/>
+                                            <RowDefinition Height="116"/>
                                         </Grid.RowDefinitions>
-                                        <AppBarButton Opacity="0.5" Grid.Row="2" Icon="Edit" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="34" Width="34" Margin="0,0,0,0">
+                                        <AppBarButton Opacity="0.5" PointerEntered="ToggleHand" PointerExited="TogglePointer" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Height="18" Margin="0,0,4,0" Width="18" RenderTransformOrigin="-0.333,0.519">
+                                            <AppBarButton.Content>
+                                                <iconPacks:PackIconOcticons Kind="Grabber" Margin="0,-14,0,0" Width="18" Height="18"></iconPacks:PackIconOcticons>
+                                            </AppBarButton.Content>
                                             <AppBarButton.Flyout>
                                                 <MenuFlyout>
-                                                    <MenuFlyoutItem Text="修改用户名" Click="EditUser"/>
-                                                    <MenuFlyoutItem Text="删除用户" Click="DeleteUser"/>
+                                                    <MenuFlyoutItem PointerEntered="ToggleHand" PointerExited="TogglePointer" Text="修改用户名" Click="EditUser"/>
+                                                    <MenuFlyoutItem PointerEntered="ToggleHand" PointerExited="TogglePointer" Text="删除用户" Click="DeleteUser"/>
                                                 </MenuFlyout>
                                             </AppBarButton.Flyout>
                                         </AppBarButton>
-                                        <Ellipse Width="116" Height="116" Grid.Row="0" HorizontalAlignment="Center">
+                                        <Ellipse Width="116" Height="116" Grid.Row="1" HorizontalAlignment="Center">
                                             <Ellipse.Fill>
                                                 <ImageBrush x:Name="ImageToload" ImageSource="{Binding UId,Converter={StaticResource uricvt},Mode=OneWay}"/>
                                             </Ellipse.Fill>
                                         </Ellipse>
-                                        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                                            <TextBlock Grid.Row="1" FontSize="16" Text="{x:Bind Path=Username,Mode=OneWay}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                                            <TextBlock Grid.Row="1" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                        </StackPanel>
                                     </Grid>
-                                </xp:Shadow>
+                                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Row="1" FontSize="16" Text="{x:Bind Path=Username,Mode=OneWay}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                                        <TextBlock Grid.Row="1" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>

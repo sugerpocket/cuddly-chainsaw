@@ -19,6 +19,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using cuddly_chainsaw.Converters;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Diagnostics;
+
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 

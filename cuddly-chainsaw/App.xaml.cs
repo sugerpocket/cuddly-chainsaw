@@ -85,11 +85,10 @@ namespace cuddly_chainsaw
                 Window.Current.Activate();
             }
             var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.BackgroundColor = Colors.YellowGreen;
-            titleBar.ForegroundColor = Colors.White;
-            titleBar.ButtonHoverBackgroundColor = Colors.GreenYellow;
-            titleBar.ButtonBackgroundColor = Colors.ForestGreen;
-            titleBar.ButtonForegroundColor = Colors.White;
+            titleBar.BackgroundColor = Colors.White;
+            titleBar.ForegroundColor = Colors.Black;
+            titleBar.ButtonHoverBackgroundColor = Colors.YellowGreen;
+            titleBar.ButtonHoverForegroundColor = Colors.White;
         }
 
         /// <summary>
