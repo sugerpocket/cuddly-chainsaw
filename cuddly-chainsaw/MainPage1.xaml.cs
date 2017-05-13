@@ -33,9 +33,12 @@ namespace cuddly_chainsaw
         AssignmentViewModel AssignmentModel;
         UserViewModel UserModel;
 
+        public static Frame view = null;
+
         public MainPage1()
         {
             this.InitializeComponent();
+            MainPage1.view = this.viewFrame;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -56,14 +59,19 @@ namespace cuddly_chainsaw
             this.InitializeComponent();
             if (UserModel.CurrentUser == null || !UserModel.CurrentUser.isAdmin())
             {
-
+                assignmentPage.Visibility = Visibility.Collapsed;
+                userViewPage.Visibility = Visibility.Collapsed;
+                if (UserModel.CurrentUser == null)
+                {
+                    infoPage.Visibility = Visibility.Collapsed;
+                }
             }
         }
+
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var temp = (StackPanel)e.ClickedItem;
-            Frame view = viewFrame;
             if (temp.Parent == mainPage)
             {
                 view.Navigate(typeof(MainPage), UserModel);

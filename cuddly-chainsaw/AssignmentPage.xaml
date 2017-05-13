@@ -27,10 +27,10 @@
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="VisualStateMin800">
-                    <VisualState.Setters>
+                    <!--<VisualState.Setters>
                         <Setter Target="splitView.DisplayMode" Value="CompactInline" />
                         <Setter Target="splitView.IsPaneOpen" Value="True" />
-                    </VisualState.Setters>
+                    </VisualState.Setters>-->
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="800" />
                     </VisualState.StateTriggers>

@@ -64,16 +64,13 @@ namespace cuddly_chainsaw
             this.InitializeComponent();
             if (UserModel.CurrentUser == null || !UserModel.CurrentUser.isAdmin())
             {
-                if (UserModel.CurrentUser == null)
-                {
-                }
             }
         }
 
         private void Assignment_Clicked(object sender, ItemClickEventArgs e)
         {
             UserModel.SelectedAssignment = (Assignment)e.ClickedItem;
-            Frame root = Window.Current.Content as Frame;
+            Frame root = MainPage1.view;
             root.Navigate(typeof(AssignmentPage), UserModel);
         }
 

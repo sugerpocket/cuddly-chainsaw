@@ -108,7 +108,7 @@ namespace cuddly_chainsaw
                 updateButton_Click(sender, e);
                 return;
             }
-            Frame root = Window.Current.Content as Frame;
+            Frame root = MainPage1.view;
             Assignment newAsg = new Assignment(titleTextBox.Text, detailsTextBox.Text, (uint)AsgType.SelectedIndex, 0, new DateTime(ddlBox.Date.Ticks));
             await AssignmentModel.newAssignments(newAsg);
             UserModel.SelectedAssignment = AssignmentModel.SelectedAssignment;
@@ -117,7 +117,7 @@ namespace cuddly_chainsaw
 
         private async void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame root = Window.Current.Content as Frame;
+            Frame root = MainPage1.view;
             AssignmentModel.SelectedAssignment.setTitle(titleTextBox.Text);
             AssignmentModel.SelectedAssignment.setContent(detailsTextBox.Text);
             AssignmentModel.SelectedAssignment.DDL = new DateTime(ddlBox.Date.Ticks);
