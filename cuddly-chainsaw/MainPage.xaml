@@ -9,10 +9,13 @@
     xmlns:md="using:cuddly_chainsaw.Models"
     xmlns:cvt="using:cuddly_chainsaw.Converters"
     xmlns:iconPacks="using:MahApps.Metro.IconPacks"
+    xmlns:xp="using:XP"
     mc:Ignorable="d">
 
     <Page.Resources>
         <cvt:TimeConverter x:Key="timeCvt" />
+        <cvt:TypeImageConverter x:Key="typeCvt" />
+        <cvt:TypeImageConverter_Done x:Key="typeDoneCvt" />
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
@@ -93,7 +96,6 @@
                                 <RowDefinition Height="120" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-
                             <Grid Grid.Row="0" Margin="20,20,0,0" >
                                 <StackPanel Orientation="Horizontal" >
                                     <StackPanel x:Name="doingAssignments">
@@ -114,37 +116,33 @@
                                         <TextBlock Text="{Binding UserModel.SelectedUser.Nickname}" />
                                     </StackPanel>
                                 </StackPanel>
-                                <Grid >
-                                   
-                                </Grid>
                             </Grid>
                             <Grid Grid.Row="1">
                                 <ScrollViewer x:Name="DoingBox"  VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" Visibility="Visible" >
-                                    <GridView Grid.Column="0" IsItemClickEnabled="True" ItemsSource="{x:Bind AssignmentModel.DoingAssignments}" ItemClick="Assignment_Clicked" Margin="0,0,40,0">
+                                    <GridView Grid.Column="0" IsItemClickEnabled="True" ItemsSource="{x:Bind AssignmentModel.DoingAssignments}" ItemClick="Assignment_Clicked" Margin="0,0,40,0" >
                                         <GridView.ItemTemplate >
                                             <DataTemplate x:DataType="md:Assignment" >
                                                 <UserControl>
-                                                    <Grid Height="240" Width="260" BorderBrush="Green" BorderThickness="2" Margin="10">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="30" />
-                                                            <RowDefinition Height="160" />
-                                                            <RowDefinition Height="45" />
-                                                        </Grid.RowDefinitions>
-                                                        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="20,10,0,0">
-                                                            <TextBlock Text="Title: " />
-                                                            <TextBlock x:Name="Title" Text="{Binding Title, Mode=OneWay}" HorizontalAlignment="Left" Margin="20,0,0,0"/>
-                                                        </StackPanel>
-                                                        <Image Grid.Row="1" Source="Assets/doing.png" Height="150" Width="150" Margin="0,3,12,7"/>
-                                                        <StackPanel Grid.Row="2" Margin="20,0,0,0">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Start: "  Foreground="Gray"/>
-                                                                <TextBlock x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
-                                                            </StackPanel>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="End: " Foreground="Gray"/>
-                                                                <TextBlock x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
-                                                            </StackPanel>
-                                                        </StackPanel>
+                                                    <Grid Height="260" Width="270"  Margin="10">
+                                                        <xp:Shadow Z_Depth="1" CornerRadius="10" >
+                                                            <Grid Background="White" Width="260" Height="250"  CornerRadius="10">
+                                                                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="20,10,0,0">
+                                                                    <TextBlock Text="Title: " />
+                                                                    <TextBlock x:Name="Title" Text="{Binding Title, Mode=OneWay}" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                                                                </StackPanel>
+                                                                <Image x:Name="typeImage" Grid.Row="1" Source="{Binding Type, Converter={StaticResource typeCvt}}" Height="150" Width="150" Margin="0,3,12,7"/>
+                                                                <StackPanel Grid.Row="2" Margin="20,200,0,0">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Start: "  Foreground="Gray"/>
+                                                                        <TextBlock x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                    </StackPanel>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="End: " Foreground="Gray"/>
+                                                                        <TextBlock x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </xp:Shadow>
                                                     </Grid>
                                                 </UserControl>
                                             </DataTemplate>
@@ -152,31 +150,30 @@
                                     </GridView>
                                 </ScrollViewer>
                                 <ScrollViewer x:Name="DoneBox" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" Visibility="Collapsed">
-                                    <GridView Grid.Column="0" IsItemClickEnabled="True" ItemsSource="{x:Bind AssignmentModel.DoneAssignments}" ItemClick="Assignment_Clicked"  Margin="0,0,40,0">
-                                        <GridView.ItemTemplate >
+                                    <GridView Grid.Column="0" IsItemClickEnabled="True" ItemsSource="{x:Bind AssignmentModel.DoneAssignments}" ItemClick="Assignment_Clicked"  Margin="0,0,40,0" >
+                                        <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="md:Assignment" >
                                                 <UserControl>
-                                                    <Grid Height="240" Width="260" Background="#8cbf26" Margin="10">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="30" />
-                                                            <RowDefinition Height="160" />
-                                                            <RowDefinition Height="50" />
-                                                        </Grid.RowDefinitions>
-                                                        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="20,10,0,0">
-                                                            <TextBlock Text="Title: "  Foreground="White"/>
-                                                            <TextBlock x:Name="Title_1" Text="{Binding Title, Mode=OneWay}" HorizontalAlignment="Left" Margin="20,0,0,0" Foreground="White"/>
-                                                        </StackPanel>
-                                                        <Image Grid.Row="1" Source="Assets/done.png" Height="150" Width="150" Margin="0,3,12,7"/>
-                                                        <StackPanel Grid.Row="2" Margin="20,0,0,0">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Start: "  Foreground="Gray"/>
-                                                                <TextBlock x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
-                                                            </StackPanel>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="End: " Foreground="Gray"/>
-                                                                <TextBlock x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
-                                                            </StackPanel>
-                                                        </StackPanel>
+                                                    <Grid Height="260" Width="270" Margin="10">
+                                                        <xp:Shadow Z_Depth="1" CornerRadius="10" >
+                                                            <Grid Background="#8cbf26" Width="260" Height="250"  CornerRadius="10">
+                                                                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="20,10,0,0">
+                                                                    <TextBlock Text="Title: " />
+                                                                    <TextBlock x:Name="Title" Text="{Binding Title, Mode=OneWay}" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                                                                </StackPanel>
+                                                                <Image x:Name="typeImage" Grid.Row="1" Source="{Binding Type, Converter={StaticResource typeDoneCvt}}" Height="150" Width="150" Margin="0,3,12,7"/>
+                                                                <StackPanel Grid.Row="2" Margin="20,200,0,0">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Start: "  Foreground="Gray"/>
+                                                                        <TextBlock x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                    </StackPanel>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="End: " Foreground="Gray"/>
+                                                                        <TextBlock x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </xp:Shadow>
                                                     </Grid>
                                                 </UserControl>
                                             </DataTemplate>

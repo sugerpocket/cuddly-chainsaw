@@ -19,6 +19,7 @@ using cuddly_chainsaw.Models;
 using System.Threading;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
+using Windows.UI;
 
 namespace cuddly_chainsaw
 {
@@ -35,73 +36,8 @@ namespace cuddly_chainsaw
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            //="{StaticResource ResourceKey=Light}"
-
-            //  user.init();
 
         }
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
-        AssignmentViewModel temp;
-
-        async void test()
-        {
-            Assignment ass1 = new Assignment("test12", "doing", 0, 1, new DateTime(2020, 1, 1));
-
-            //Assignment ass2 = new Assignment("test9", "doing", 0, 1, new DateTime(2022, 1, 1));
-            //Assignment ass3 = new Assignment("test10", "done", 0, 1, new DateTime(2033, 1, 1));
-            //Assignment ass4 = new Assignment("test11", "done", 0, 1, new DateTime(2035, 1, 1));
-
-            //await user.logIn("15331060", "123456");
-            DateTime tempTime = DateTime.Now;
-            Boolean flag = true;
-            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
-                if (flag)
-                {
-                    temp = new AssignmentViewModel();
-                    flag = false;
-                }
-            //allDone.Set();
-
-            //add newAssignments
-
-            //allDone.WaitOne();
-
-            //temp.newAssignments(ass2);
-            //temp.newAssignments(ass3);
-            //temp.newAssignments(ass4);
-
-            //update Assignments test4
-            tempTime = DateTime.Now;
-            flag = true;
-            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
-                if (flag)
-                {
-                    flag = await temp.newAssignments(ass1);
-                }
-            flag = true;
-            temp.SelectedAssignment = temp.AllAssignments.Last();
-            temp.SelectedAssignment.setTitle("ChangedTest4");
-            //temp.SelectedAssignment = ass4;
-            tempTime = DateTime.Now;
-            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
-                if (flag)
-                {
-                    flag = await temp.updateAssignments();
-                }
-            flag = true;
-            temp.SelectedAssignment = temp.AllAssignments.First();
-            tempTime = DateTime.Now;
-            while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
-                if (flag)
-                {
-                    flag = await temp.deleteAssignments();
-                }
-            ////delete Assignment test3
-            //temp.SelectedAssignment = ass3;
-            //temp.deleteAssignments();
-        }
-
-        ViewModels.UserViewModel user = new ViewModels.UserViewModel();
         /// <summary>
         /// 在应用程序由最终用户正常启动时进行调用。
         /// 将在启动应用程序以打开特定文件等情况下使用。
@@ -148,6 +84,12 @@ namespace cuddly_chainsaw
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
             }
+            var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = Colors.YellowGreen;
+            titleBar.ForegroundColor = Colors.White;
+            titleBar.ButtonHoverBackgroundColor = Colors.GreenYellow;
+            titleBar.ButtonBackgroundColor = Colors.ForestGreen;
+            titleBar.ButtonForegroundColor = Colors.White;
         }
 
         /// <summary>

@@ -21,6 +21,9 @@ using Windows.Storage;
 using cuddly_chainsaw.ViewModels;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
+using Windows.UI;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 /// <summary>
@@ -68,8 +71,6 @@ namespace cuddly_chainsaw
                     infoPage.Visibility = Visibility.Collapsed;
                 }
             }
-
-
         }
 
         /// <summary>
