@@ -89,44 +89,6 @@ namespace cuddly_chainsaw
         }
 
         /// <summary>
-        /// homePage: MainPage, 用户登录后显示的主页
-        /// infoPage：查看user或admin的个人信息
-        /// （admin）AssignmentPage： 在此用作创建新的Assignmet，还可以用来查看作业详情
-        ///  AssignmentModel.SelectedAssignment == null， 创建新的Assignment； AssignmentModel.SelectedAssignment != null, 查看Assignment详情
-        /// （admin）userViewPage： 查看现有的所有用户
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var temp = (StackPanel)e.ClickedItem;
-            Frame root = Window.Current.Content as Frame;
-            if (temp.Parent == mainPage)
-            {
-                root.Navigate(typeof(MainPage), userViewModel);
-            }
-            else if (temp.Parent == infoPage)
-            {
-                root.Navigate(typeof(InfoPage), userViewModel);
-            }
-            else if (temp.Parent == assignmentPage)
-            {
-                AssignmentModel.SelectedAssignment = null;
-                root.Navigate(typeof(AssignmentPage), userViewModel);
-            }
-            else if (temp.Parent == userViewPage)
-            {
-                root.Navigate(typeof(UserViewPage), userViewModel);
-            }
-        }
-
-        private void SpliteView_Click(object sender, RoutedEventArgs e)
-        {
-            splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
-            //userAvatar.Visibility = (userAvatar.Visibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        /// <summary>
         /// TEST 下面只是一个测试能否修改头像的函数
         /// BUG 出现的主要是管理员修改完，并没有同步更新。
         /// </summary>

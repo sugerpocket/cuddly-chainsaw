@@ -58,44 +58,6 @@ namespace cuddly_chainsaw
             DataTransferManager.GetForCurrentView().DataRequested -= DataTransferManager_DataRequested;
             UserModel.SelectedAssignment = null;
         }
-
-        /// <summary>
-        /// homePage: MainPage, 用户登录后显示的主页
-        /// infoPage：查看user或admin的个人信息
-        /// （admin）AssignmentPage： 在此用作创建新的Assignmet，还可以用来查看作业详情
-        ///  AssignmentModel.SelectedAssignment == null， 创建新的Assignment； AssignmentModel.SelectedAssignment != null, 查看Assignment详情
-        /// （admin）userViewPage： 查看现有的所有用户
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var temp = (StackPanel)e.ClickedItem;
-            Frame root = Window.Current.Content as Frame;
-            if (temp.Parent == mainPage)
-            {
-                root.Navigate(typeof(MainPage), UserModel);
-            }
-            else if (temp.Parent == infoPage)
-            {
-                root.Navigate(typeof(InfoPage), UserModel);
-            }
-            else if (temp.Parent == assignmentPage)
-            {
-                UserModel.SelectedAssignment = null;
-                root.Navigate(typeof(AssignmentPage), UserModel);
-            }
-            else if (temp.Parent == userViewPage)
-            {
-                root.Navigate(typeof(UserViewPage), UserModel);
-            }
-        }
-
-        private void SpliteView_Click(object sender, RoutedEventArgs e)
-        {
-            splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
-        }
-
         /// <summary>
         /// 当目前登陆的用户是admin时，才能修改Assignment的信息
         /// 否则用户是普通user，禁用修改信息
@@ -127,8 +89,6 @@ namespace cuddly_chainsaw
             }
             if (UserModel.CurrentUser == null || !UserModel.CurrentUser.isAdmin())
             {
-                assignmentPage.Visibility = Visibility.Collapsed;
-                userViewPage.Visibility = Visibility.Collapsed;
                 titleTextBox.IsReadOnly = true;
                 detailsTextBox.IsReadOnly = true;
                 ddlBox.IsEnabled = false;

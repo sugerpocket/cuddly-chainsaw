@@ -55,8 +55,6 @@ namespace cuddly_chainsaw
             this.InitializeComponent();
             if (UserModel.CurrentUser == null || !UserModel.CurrentUser.isAdmin())
             {
-                assignmentPage.Visibility = Visibility.Collapsed;
-                userViewPage.Visibility = Visibility.Collapsed;
             }
             //显示用户个人信息
             if (UserModel.CurrentUser != null)
@@ -68,35 +66,6 @@ namespace cuddly_chainsaw
                 string imageUri = "http://www.sugerpocket.cn:3005/api/user/avatar?uid=" + uid;
                 ava.ImageSource = new BitmapImage(new Uri(imageUri));
             }
-        }
-
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var temp = (StackPanel)e.ClickedItem;
-            Frame root = Window.Current.Content as Frame;
-            if (temp.Parent == mainPage)
-            {
-                root.Navigate(typeof(MainPage), UserModel);
-            }
-            else if (temp.Parent == infoPage)
-            {
-                root.Navigate(typeof(InfoPage), UserModel);
-            }
-            else if (temp.Parent == assignmentPage)
-            {
-                UserModel.SelectedAssignment = null;
-                root.Navigate(typeof(AssignmentPage), UserModel);
-            }
-            else if (temp.Parent == userViewPage)
-            {
-                root.Navigate(typeof(UserViewPage), UserModel);
-            }
-        }
-
-
-        private void SpliteView_Click(object sender, RoutedEventArgs e)
-        {
-            splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
         }
 
         //点击确认修改个人信息

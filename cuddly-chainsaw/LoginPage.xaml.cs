@@ -121,7 +121,7 @@ namespace cuddly_chainsaw
                         updator.Update(notification);
                     }
                 }
-                this.Frame.Navigate(typeof(MainPage), UserModel);
+                this.Frame.Navigate(typeof(MainPage1), UserModel);
             }
             //login.Visibility = Visibility.Visible;
             //sign.Visibility = Visibility.Visible;
