@@ -62,8 +62,8 @@
                                 </ListViewItem>
                                 <ListViewItem>
                                     <StackPanel x:Name="mainPage" Orientation="Horizontal" >
-                                        <SymbolIcon Symbol="Home"></SymbolIcon>
-                                        <TextBlock Text="主页" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                        <SymbolIcon Symbol="Library"></SymbolIcon>
+                                        <TextBlock Text="所有作业" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </ListViewItem>
                                 <ListViewItem>
