@@ -1,7 +1,9 @@
 ﻿{
   "dependencies": {
+    "MahApps.Metro.IconPacks": "1.9.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-    "Newtonsoft.Json": "10.0.2"
+    "Newtonsoft.Json": "10.0.2",
+    "XPShadow": "0.1.2"
   },
   "frameworks": {
     "uap10.0": {}

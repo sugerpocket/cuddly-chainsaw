@@ -119,6 +119,8 @@ namespace cuddly_chainsaw.Models
 
         public DateTime DDL { get { return (DateTime)ddl; } set { ddl = value; } }
 
+        public uint Type { get { return (uint)type; } set { type = value; } }
+
         public void setTitle(string newTitle)
         {
             title = newTitle;

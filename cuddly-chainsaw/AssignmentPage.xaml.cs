@@ -56,6 +56,7 @@ namespace cuddly_chainsaw
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             DataTransferManager.GetForCurrentView().DataRequested -= DataTransferManager_DataRequested;
+            UserModel.SelectedAssignment = null;
         }
 
         /// <summary>
@@ -93,7 +94,6 @@ namespace cuddly_chainsaw
         private void SpliteView_Click(object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
-            UserModel.SelectedAssignment = null;
         }
 
         /// <summary>
@@ -104,18 +104,27 @@ namespace cuddly_chainsaw
         /// <param name="e"></param>
         private void initializeView(Assignment asg)
         {
-            if(asg != null)
+            if (asg != null)
             {
                 textBlock.Text = asg.Title;
-                if(asg.isEnded())
+                titleTextBox.Text = asg.Title;
+                detailsTextBox.Text = asg.getContent();
+                //startBox.Date = new DateTime(asg.Start.Ticks);
+                ddlBox.Date = new DateTime(asg.DDL.Ticks);
+                createButton.Icon = new SymbolIcon(Symbol.Upload);
+                string temp;
+                if (asg.Type != 0)
+                {
+                    backgroundImage.Source = new BitmapImage(new Uri("ms-appx:Assets/" + asg.Type + ".jpg"));
+                }
+                else if (asg.isEnded())
                 {
                     backgroundImage.Source = new BitmapImage(new Uri("ms-appx:Assets/done.png", UriKind.RelativeOrAbsolute));
                 }
-                titleTextBox.Text = asg.Title;
-                detailsTextBox.Text = asg.getContent();
-                startBox.Date = new DateTime(asg.Start.Ticks);
-                ddlBox.Date = new DateTime(asg.DDL.Ticks);
-                createButton.Icon = new SymbolIcon(Symbol.Upload);
+                else
+                {
+                    backgroundImage.Source = new BitmapImage(new Uri("ms-appx:Assets/doing.png", UriKind.RelativeOrAbsolute));
+                }
             }
             if (UserModel.CurrentUser == null || !UserModel.CurrentUser.isAdmin())
             {
@@ -125,7 +134,8 @@ namespace cuddly_chainsaw
                 detailsTextBox.IsReadOnly = true;
                 ddlBox.IsEnabled = false;
                 createButton.Visibility = Visibility.Collapsed;
-            } else
+            }
+            else
             {
                 selectFileButton.Visibility = Visibility.Collapsed;
             }
@@ -140,7 +150,7 @@ namespace cuddly_chainsaw
                 return;
             }
             Frame root = Window.Current.Content as Frame;
-            Assignment newAsg = new Assignment(titleTextBox.Text, detailsTextBox.Text, 0, 0, new DateTime(ddlBox.Date.Ticks));
+            Assignment newAsg = new Assignment(titleTextBox.Text, detailsTextBox.Text, (uint)AsgType.SelectedIndex, 0, new DateTime(ddlBox.Date.Ticks));
             await AssignmentModel.newAssignments(newAsg);
             UserModel.SelectedAssignment = AssignmentModel.SelectedAssignment;
             root.Navigate(typeof(MainPage), UserModel);
@@ -152,6 +162,7 @@ namespace cuddly_chainsaw
             AssignmentModel.SelectedAssignment.setTitle(titleTextBox.Text);
             AssignmentModel.SelectedAssignment.setContent(detailsTextBox.Text);
             AssignmentModel.SelectedAssignment.DDL = new DateTime(ddlBox.Date.Ticks);
+            AssignmentModel.SelectedAssignment.Type = (uint)AsgType.SelectedIndex;
             await AssignmentModel.updateAssignments();
             UserModel.SelectedAssignment = AssignmentModel.SelectedAssignment;
             root.Navigate(typeof(MainPage), UserModel);
@@ -173,10 +184,10 @@ namespace cuddly_chainsaw
                 var temp = file;
                 using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
                 {
-                   flag = await AssignmentModel.submitAssignments(temp);
+                    flag = await AssignmentModel.submitAssignments(temp);
                 }
             }
-            if(flag)
+            if (flag)
             {
                 var i = new Windows.UI.Popups.MessageDialog("上传成功！").ShowAsync();
             }

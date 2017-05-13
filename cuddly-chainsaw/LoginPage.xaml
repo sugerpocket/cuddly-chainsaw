@@ -23,10 +23,10 @@
             <TextBox x:Name="username" Grid.Row="2" Text="" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="用户名" BorderThickness="0,0,0,1" />
             <PasswordBox x:Name="password" Grid.Row="3" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="密码" BorderThickness="0,0,0,1"/>
             <Button x:Name="login" Grid.Row="4" Content="登 录" HorizontalAlignment="Center" Width="350" Click="login_Click" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
-                    <Button.Background>
-                        <SolidColorBrush Color="#FF8CBF26"/>
-                    </Button.Background>
-                </Button>
+                <Button.Background>
+                    <SolidColorBrush Color="#FF8CBF26"/>
+                </Button.Background>
+            </Button>
             <Button x:Name="sign" Grid.Row="5" Content="还没有帐号 > >" Width="350" Height="32" Click="sign_Click" Style="{StaticResource TextBlockButtonStyle}" Foreground="#FF8CBF26" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>

@@ -7,10 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     RequestedTheme="Light"
     xmlns:cvt="using:cuddly_chainsaw.Converters"
+    xmlns:iconPacks="using:MahApps.Metro.IconPacks"
     mc:Ignorable="d">
 
     <Page.Resources>
         <cvt:TimeConverter x:Key="timeCvt" />
+        <cvt:TimeConverter x:Key="typeCvt" />
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
@@ -38,7 +40,7 @@
 
         <Grid>
             <Grid>
-                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250"  Height="720">
+                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250" Margin="0,0,0,0">
                     <!--导航菜单栏-->
                     <SplitView.Pane>
                         <Grid>
@@ -50,7 +52,11 @@
                             <ListView Grid.Row="0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
                                 <ListViewItem>
                                     <StackPanel Orientation="Horizontal">
-                                        <AppBarButton x:Name="allA" Icon="ShowBcc" VerticalAlignment="Center" Height="40" Width="40" Click="SpliteView_Click"/>
+                                        <AppBarButton x:Name="allA" Click="SpliteView_Click" Height="20" Width="20">
+                                            <AppBarButton.Content>
+                                                <iconPacks:PackIconOcticons Kind="Grabber" Margin="0,-14,0,0" Width="20" Height="20"></iconPacks:PackIconOcticons>
+                                            </AppBarButton.Content>
+                                        </AppBarButton>
                                     </StackPanel>
                                 </ListViewItem>
                                 <ListViewItem>
@@ -87,16 +93,24 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="textBlock" Grid.Row="0" Text="Title" Margin="10,0,0,0" Style="{StaticResource HeaderTextBlockStyle}"/>
+                            <TextBlock x:Name="textBlock" Grid.Row="0" Text="Title : " Style="{StaticResource HeaderTextBlockStyle}" Margin="20,0,0,0"/>
                             <Grid Grid.Row="1" >
-                                <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                                <ScrollViewer VerticalScrollBarVisibility="Visible" >
                                     <StackPanel  Width="440" Margin="0,0,40,0">
                                         <Image Source="Assets/doing.png" Width="160" Height="160" Stretch="UniformToFill" Name="backgroundImage"/>
                                         <AppBarButton Icon="ReShare" HorizontalAlignment="Right" Click="shareButton_Click" Height="40"/>
                                         <TextBox Width="350" Header="Title" Margin="0,8,0,0" Name="titleTextBox" IsReadOnly="False" />
                                         <TextBox Width="350" Height="96" Margin="0,8,0,0" Header="Details" Name="detailsTextBox" IsReadOnly="False" />
-                                        <DatePicker Width="350" Margin="0,8,0,0" Header="开始时间：" HorizontalAlignment="Center" Name="startBox" IsEnabled="False" />
+                                        <!--<DatePicker Width="350" Margin="0,8,0,0" Header="开始时间：" HorizontalAlignment="Center" Name="startBox" IsEnabled="False" />-->
+                                        <ComboBox HorizontalAlignment="Right" Width="100" DataContext="作业类型：" Margin="0,20,46,0" x:Name="AsgType">
+                                            <ComboBoxItem Content="其他" />
+                                            <ComboBoxItem Content="操作系统" />
+                                            <ComboBoxItem Content="数据库" />
+                                            <ComboBoxItem Content="计算机组成原理" />
+                                            <ComboBoxItem Content="工程数学" />
+                                        </ComboBox>
                                         <DatePicker Width="350" Margin="0,8,0,0" Header="结束时间：" HorizontalAlignment="Center" Name="ddlBox" IsEnabled="True" />
+
                                         <RelativePanel Width="350" Margin="0,20,0,0">
                                             <AppBarButton x:Name="createButton" Icon="Add" Click="createButton_Click" />
                                             <AppBarButton x:Name="selectFileButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="selectFileButton_Click" />
