@@ -100,7 +100,7 @@
                                                     </Grid.RowDefinitions>
                                                     <StackPanel Grid.Row="0" Padding="0,10,0,10">
                                                         <TextBlock x:Name="Title" Text="{Binding Title, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Height="28"/>
-                                                        <Image Grid.Row="1" Source="{Binding Type, Converter={StaticResource typeCvt}}" Height="150" MinWidth="240" Holding=""/>
+                                                        <Image Grid.Row="1" Source="{Binding Type, Converter={StaticResource typeCvt}}" Height="150" MinWidth="240"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Row="1">
                                                         <Grid Height="20">
