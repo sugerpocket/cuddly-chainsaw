@@ -38,7 +38,7 @@ namespace cuddly_chainsaw
             //="{StaticResource ResourceKey=Light}"
 
             //  user.init();
-
+            
         }
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         AssignmentViewModel temp;
@@ -74,7 +74,7 @@ namespace cuddly_chainsaw
             tempTime = DateTime.Now;
             flag = true;
             while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
-                if (flag)
+                if(flag)
                 {
                     flag = await temp.newAssignments(ass1);
                 }
@@ -84,7 +84,7 @@ namespace cuddly_chainsaw
             //temp.SelectedAssignment = ass4;
             tempTime = DateTime.Now;
             while (tempTime.AddSeconds(3.0).CompareTo(DateTime.Now) > 0)
-                if (flag)
+                if(flag)
                 {
                     flag = await temp.updateAssignments();
                 }

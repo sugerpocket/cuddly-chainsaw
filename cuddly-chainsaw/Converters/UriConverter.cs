@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace cuddly_chainsaw.Converters
 {
-    public class UriConverter : IValueConverter
+    public class UriConverter:IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -24,6 +24,6 @@ namespace cuddly_chainsaw.Converters
             throw new NotImplementedException();
         }
 
-        #endregion
+     #endregion
     }
 }

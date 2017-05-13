@@ -11,7 +11,7 @@
       <text>Title</text>
       <text hint-style="6">endTime</text>
     </binding>
-
+    
     <binding template="TileWide">
       <image src="Assets\header.jpeg" placement="background"/>
       <text>Title</text>

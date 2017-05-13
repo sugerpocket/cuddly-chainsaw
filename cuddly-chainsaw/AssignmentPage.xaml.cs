@@ -56,7 +56,6 @@ namespace cuddly_chainsaw
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             DataTransferManager.GetForCurrentView().DataRequested -= DataTransferManager_DataRequested;
-            UserModel.SelectedAssignment = null;
         }
 
         /// <summary>
@@ -94,6 +93,7 @@ namespace cuddly_chainsaw
         private void SpliteView_Click(object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
+            UserModel.SelectedAssignment = null;
         }
 
         /// <summary>

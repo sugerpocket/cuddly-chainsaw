@@ -30,7 +30,7 @@ namespace cuddly_chainsaw
         {
             //this.InitializeComponent();
         }
-
+        
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.InitializeComponent();

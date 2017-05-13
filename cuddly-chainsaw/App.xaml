@@ -6,9 +6,19 @@
     RequestedTheme="Light"
     >
     <Application.Resources>
-        <Style x:Key="TitleBarStyle" TargetType="AppBar">
-            <Setter Property="Background" Value="Green" />
-            <!--<Setter Property=""-->
-        </Style>
+        <!--<ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="Green" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="Black" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="Green" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <SolidColorBrush x:Key="brushGray" Color="Gray"/>
+        </ResourceDictionary>-->
     </Application.Resources>
 </Application>

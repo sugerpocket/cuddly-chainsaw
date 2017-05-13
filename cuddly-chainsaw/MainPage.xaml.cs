@@ -69,7 +69,7 @@ namespace cuddly_chainsaw
                 }
             }
 
-
+            
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace cuddly_chainsaw
             DoingBox.Visibility = Visibility.Visible;
             DoneBox.Visibility = Visibility.Collapsed;
 
-
+            
         }
 
         private void doneAssignmentsButton_Click(object sender, RoutedEventArgs e)

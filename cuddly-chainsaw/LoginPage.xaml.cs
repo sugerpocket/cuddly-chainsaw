@@ -94,7 +94,7 @@ namespace cuddly_chainsaw
             //login.Visibility = Visibility.Visible;
             //sign.Visibility = Visibility.Visible;
             //proRring.Visibility = Visibility.Collapsed;
-
+            
         }
 
         private void sign_Click(object sender, RoutedEventArgs e)
