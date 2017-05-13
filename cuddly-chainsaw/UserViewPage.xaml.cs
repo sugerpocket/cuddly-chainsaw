@@ -101,20 +101,20 @@ namespace cuddly_chainsaw
         {
             var temp = (StackPanel)e.ClickedItem;
             Frame root = Window.Current.Content as Frame;
-            if (temp == mainPage)
+            if (temp.Parent == mainPage)
             {
                 root.Navigate(typeof(MainPage), userViewModel);
             }
-            else if (temp == infoPage)
+            else if (temp.Parent == infoPage)
             {
                 root.Navigate(typeof(InfoPage), userViewModel);
             }
-            else if (temp == assignmentPage)
+            else if (temp.Parent == assignmentPage)
             {
                 AssignmentModel.SelectedAssignment = null;
                 root.Navigate(typeof(AssignmentPage), userViewModel);
             }
-            else if (temp == userViewPage)
+            else if (temp.Parent == userViewPage)
             {
                 root.Navigate(typeof(UserViewPage), userViewModel);
             }
@@ -132,7 +132,7 @@ namespace cuddly_chainsaw
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public async void select(object sender, RoutedEventArgs e)
+        public async void select(object sender,RoutedEventArgs e)
         {
             // 设置文件选择器
             Windows.Storage.Pickers.FileOpenPicker open = new Windows.Storage.Pickers.FileOpenPicker();
@@ -152,7 +152,7 @@ namespace cuddly_chainsaw
             if (file != null)
             {
                 var temp = file;
-                using (Windows.Storage.Streams.IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                using(Windows.Storage.Streams.IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
                 {
                     await userViewModel.UpdateAvatar(temp);
                 }

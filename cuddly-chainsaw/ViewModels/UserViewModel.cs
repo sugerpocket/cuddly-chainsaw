@@ -66,7 +66,16 @@ namespace cuddly_chainsaw.ViewModels
             {
                 var i = new MessageDialog(str).ShowAsync();
             }
-            userItems = new ObservableCollection<UserMeta>(user);
+            ObservableCollection<Models.UserMeta> userItems1 = new ObservableCollection<UserMeta>();
+            foreach (UserMeta u in user)
+            {
+                if(u.IsAdmin != true)
+                {
+                    userItems1.Add(u);
+                }
+            }
+
+            userItems = userItems1;
         }
 
         //修改昵称或密码

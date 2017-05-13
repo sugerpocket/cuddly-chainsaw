@@ -46,12 +46,7 @@
                 <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250" Margin="0,0,0,0">
                     <!--导航菜单栏-->
                     <SplitView.Pane>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="150" />
-                            </Grid.RowDefinitions>
-
+                        <Grid >
                             <ListView Grid.Row="0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
                                 <ListViewItem>
                                     <StackPanel Orientation="Horizontal">
@@ -62,26 +57,26 @@
                                         </AppBarButton>
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel x:Name="mainPage" Orientation="Horizontal" >
-                                        <SymbolIcon Symbol="home"/>
-                                        <TextBlock Text="主页" Margin="24,0,0,0" VerticalAlignment="Center" />
+                                <ListViewItem  x:Name="mainPage">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <SymbolIcon Symbol="Library"/>
+                                        <TextBlock Text="所有作业" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel x:Name="infoPage" Orientation="Horizontal" >
+                                <ListViewItem x:Name="infoPage" >
+                                    <StackPanel Orientation="Horizontal" >
                                         <SymbolIcon Symbol="contactInfo" />
                                         <TextBlock Text="个人信息" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel x:Name="assignmentPage" Orientation="Horizontal">
+                                <ListViewItem x:Name="assignmentPage">
+                                    <StackPanel Orientation="Horizontal">
                                         <SymbolIcon Symbol="Add" />
                                         <TextBlock Text="添加作业" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel  x:Name="userViewPage" Orientation="Horizontal" >
+                                <ListViewItem  x:Name="userViewPage">
+                                    <StackPanel  Orientation="Horizontal" >
                                         <SymbolIcon Symbol="people" />
                                         <TextBlock Text="所有用户" Margin="24,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
@@ -107,14 +102,6 @@
                                         <AppBarButton Icon="Accept" Click="doneAssignmentsButton_Click"/>
                                         <TextBlock Text="已结束" HorizontalAlignment="Center" />
                                     </StackPanel>
-                                    <StackPanel Margin="20,0,20,0">
-                                        <AppBarButton Icon="View" />
-                                        <TextBlock Text="用户信息" />
-                                    </StackPanel>
-                                    <StackPanel >
-                                        <Image Source="Assets/header.jpeg" Height="60"/>
-                                        <TextBlock Text="{Binding UserModel.SelectedUser.Nickname}" />
-                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                             <Grid Grid.Row="1">
@@ -123,24 +110,29 @@
                                         <GridView.ItemTemplate >
                                             <DataTemplate x:DataType="md:Assignment" >
                                                 <UserControl>
-                                                    <Grid Height="260" Width="270"  Margin="10">
-                                                        <xp:Shadow Z_Depth="1" CornerRadius="10" >
-                                                            <Grid Background="White" Width="260" Height="250"  CornerRadius="10">
-                                                                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="20,10,0,0">
-                                                                    <TextBlock Text="Title: " />
-                                                                    <TextBlock x:Name="Title" Text="{Binding Title, Mode=OneWay}" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                                                    <Grid Height="280" Width="270"  Margin="10">
+                                                        <xp:Shadow Z_Depth="2" CornerRadius="15">
+                                                            <Grid Background="White" Width="255" Height="255"  CornerRadius="15" HorizontalAlignment="Center">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="185" />
+                                                                    <RowDefinition Height="30" />
+                                                                    <RowDefinition Height="Auto" />
+                                                                </Grid.RowDefinitions>
+                                                                <Image x:Name="typeImage" Grid.Row="0" Source="{Binding Type, Converter={StaticResource typeCvt}}" Height="150" Width="150" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                                                                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Height="20" VerticalAlignment="Top">
+                                                                    <TextBlock x:Name="Title" FontSize="18" Text="{Binding Title, Mode=OneWay}"/>
                                                                 </StackPanel>
-                                                                <Image x:Name="typeImage" Grid.Row="1" Source="{Binding Type, Converter={StaticResource typeCvt}}" Height="150" Width="150" Margin="0,3,12,7"/>
-                                                                <StackPanel Grid.Row="2" Margin="20,200,0,0">
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="Start: "  Foreground="Gray"/>
-                                                                        <TextBlock x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                <StackPanel HorizontalAlignment="Center" Grid.Row="2">
+                                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                                                        <TextBlock FontSize="14" Text="Start: "  Foreground="Gray"/>
+                                                                        <TextBlock FontSize="14" x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
                                                                     </StackPanel>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="End: " Foreground="Gray"/>
-                                                                        <TextBlock x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                    <StackPanel Orientation="Horizontal" >
+                                                                        <TextBlock FontSize="14" Text="End: " Foreground="Gray"/>
+                                                                        <TextBlock FontSize="14" x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
                                                                     </StackPanel>
                                                                 </StackPanel>
+                                                                
                                                             </Grid>
                                                         </xp:Shadow>
                                                     </Grid>
@@ -154,24 +146,29 @@
                                         <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="md:Assignment" >
                                                 <UserControl>
-                                                    <Grid Height="260" Width="270" Margin="10">
-                                                        <xp:Shadow Z_Depth="1" CornerRadius="10" >
-                                                            <Grid Background="#8cbf26" Width="260" Height="250"  CornerRadius="10">
-                                                                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="20,10,0,0">
-                                                                    <TextBlock Text="Title: " />
-                                                                    <TextBlock x:Name="Title" Text="{Binding Title, Mode=OneWay}" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                                                    <Grid Height="280" Width="270"  Margin="10">
+                                                        <xp:Shadow Z_Depth="2" CornerRadius="15">
+                                                            <Grid Background="#8cbf26" Width="255" Height="255"  CornerRadius="15" HorizontalAlignment="Center">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="185" />
+                                                                    <RowDefinition Height="30" />
+                                                                    <RowDefinition Height="Auto" />
+                                                                </Grid.RowDefinitions>
+                                                                <Image x:Name="typeImage" Grid.Row="0" Source="{Binding Type, Converter={StaticResource typeDoneCvt}}" Height="150" Width="150" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                                                                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Height="20" VerticalAlignment="Top">
+                                                                    <TextBlock x:Name="Title" FontSize="18" Text="{Binding Title, Mode=OneWay}"/>
                                                                 </StackPanel>
-                                                                <Image x:Name="typeImage" Grid.Row="1" Source="{Binding Type, Converter={StaticResource typeDoneCvt}}" Height="150" Width="150" Margin="0,3,12,7"/>
-                                                                <StackPanel Grid.Row="2" Margin="20,200,0,0">
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="Start: "  Foreground="Gray"/>
-                                                                        <TextBlock x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                <StackPanel HorizontalAlignment="Center" Grid.Row="2">
+                                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                                                        <TextBlock FontSize="14" Text="Start: "  Foreground="Gray"/>
+                                                                        <TextBlock FontSize="14" x:Name="startTime" Text="{Binding Start, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
                                                                     </StackPanel>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="End: " Foreground="Gray"/>
-                                                                        <TextBlock x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
+                                                                    <StackPanel Orientation="Horizontal" >
+                                                                        <TextBlock FontSize="14" Text="End: " Foreground="Gray"/>
+                                                                        <TextBlock FontSize="14" x:Name="endTime" Text="{Binding DDL, Mode=OneTime,Converter={StaticResource timeCvt}}"  Foreground="Gray"/>
                                                                     </StackPanel>
                                                                 </StackPanel>
+
                                                             </Grid>
                                                         </xp:Shadow>
                                                     </Grid>
