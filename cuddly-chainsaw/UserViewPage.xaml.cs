@@ -21,7 +21,8 @@ using Windows.UI.Xaml.Navigation;
 namespace cuddly_chainsaw
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// 所有用户界面
+    /// 主要处理逻辑在：查看用户，修改用户名，删除用户。
     /// </summary>
     public sealed partial class UserViewPage : Page
     {
@@ -40,6 +41,11 @@ namespace cuddly_chainsaw
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 修改用户名时的页面逻辑：使修改界面可见，用户列表界面不可见
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void EditUser(object sender, RoutedEventArgs e)
         {
             dynamic context = e.OriginalSource;
@@ -58,6 +64,11 @@ namespace cuddly_chainsaw
             EditUserInfo.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 删除用户时的页面逻辑：使删除界面可见，用户列表界面不可见
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void DeleteUser(object sender, RoutedEventArgs e)
         {
             dynamic context = e.OriginalSource;
@@ -86,39 +97,6 @@ namespace cuddly_chainsaw
             userViewModel.SelectedUser = null;
             UserGridView.Visibility = Visibility.Visible;
             DeleteUserinfo.Visibility = Visibility.Collapsed;
-        }
-
-        /// <summary>
-        /// TEST 下面只是一个测试能否修改头像的函数
-        /// BUG 出现的主要是管理员修改完，并没有同步更新。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public async void select(object sender, RoutedEventArgs e)
-        {
-            // 设置文件选择器
-            Windows.Storage.Pickers.FileOpenPicker open = new Windows.Storage.Pickers.FileOpenPicker();
-            open.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
-            open.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-
-            // 过滤以包括文件类型的示例子集。
-            open.FileTypeFilter.Clear();
-            open.FileTypeFilter.Add(".png");
-            open.FileTypeFilter.Add(".jpeg");
-            open.FileTypeFilter.Add(".jpg");
-
-            // 打开文件选择器
-            Windows.Storage.StorageFile file = await open.PickSingleFileAsync();
-
-            // 如果用户取消则file为null
-            if (file != null)
-            {
-                var temp = file;
-                using (Windows.Storage.Streams.IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                {
-                    await userViewModel.UpdateAvatar(temp);
-                }
-            }
         }
 
         private void ToggleHand(object sender, PointerRoutedEventArgs e)

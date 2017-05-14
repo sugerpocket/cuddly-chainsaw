@@ -26,17 +26,10 @@ using Windows.UI.Xaml.Hosting;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Animation;
 
-//“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
-/// <summary>
-/// Programmer: 高晨
-/// git:Nerotan
-/// Conclusion:App的主界面，根据用户是user或admin决定提供的服务
-/// Version:1.0
-/// </summary>
 namespace cuddly_chainsaw
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// Conclusion: 查看所有作业，根据用户是user或admin决定提供的服务
     /// </summary>
     public sealed partial class AssignmentsListPage : Page
     {
@@ -89,6 +82,11 @@ namespace cuddly_chainsaw
             root.Navigate(typeof(AssignmentPage), UserModel);
         }
 
+        /// <summary>
+        /// 用于切换 已完成作业和 未完成作业之间的视图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void doingAssignmentsButton_Click(object sender, RoutedEventArgs e)
         {
             DoingBox.Visibility = Visibility.Visible;
