@@ -19,12 +19,11 @@ using Windows.Storage.Streams;
 using Windows.Storage;
 using Windows.ApplicationModel.DataTransfer;
 
-// “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
 namespace cuddly_chainsaw
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// 可用于显示已有的作业信息，或者创建一个新的作业
     /// </summary>
     public sealed partial class AssignmentPage : Page
     {
@@ -58,9 +57,12 @@ namespace cuddly_chainsaw
             DataTransferManager.GetForCurrentView().DataRequested -= DataTransferManager_DataRequested;
             UserModel.SelectedAssignment = null;
         }
+
         /// <summary>
         /// 当目前登陆的用户是admin时，才能修改Assignment的信息
         /// 否则用户是普通user，禁用修改信息
+        /// 当添加作业时，显示add按钮
+        /// 当修改作业时，显示update按钮
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -171,6 +173,11 @@ namespace cuddly_chainsaw
             root.Navigate(typeof(AssignmentsListPage), UserModel);
         }
 
+        /// <summary>
+        /// app to app communication
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequest request = args.Request;
