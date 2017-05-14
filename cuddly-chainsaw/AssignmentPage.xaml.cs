@@ -71,9 +71,10 @@ namespace cuddly_chainsaw
                 textBlock.Text = asg.Title;
                 titleTextBox.Text = asg.Title;
                 detailsTextBox.Text = asg.getContent();
-                //startBox.Date = new DateTime(asg.Start.Ticks);
                 ddlBox.Date = new DateTime(asg.DDL.Ticks);
                 createButton.Icon = new SymbolIcon(Symbol.Upload);
+                createButton.Label = "update";
+                deleteButton.Visibility = Visibility.Visible;
                 if (asg.Type != 0)
                 {
                     backgroundImage.Source = new BitmapImage(new Uri("ms-appx:Assets/" + asg.Type + ".jpg"));
@@ -93,6 +94,7 @@ namespace cuddly_chainsaw
                 detailsTextBox.IsReadOnly = true;
                 ddlBox.IsEnabled = false;
                 createButton.Visibility = Visibility.Collapsed;
+                deleteButton.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -109,7 +111,7 @@ namespace cuddly_chainsaw
                 return;
             }
             Frame root = MainPage.view;
-            Assignment newAsg = new Assignment(titleTextBox.Text, detailsTextBox.Text, (uint)AsgType.SelectedIndex, 0, new DateTime(ddlBox.Date.Ticks));
+            Assignment newAsg = new Assignment(titleTextBox.Text, detailsTextBox.Text, (uint)AsgType.SelectedIndex, 0, ddlBox.Date.Value.DateTime);
             await AssignmentModel.newAssignments(newAsg);
             UserModel.SelectedAssignment = AssignmentModel.SelectedAssignment;
             root.Navigate(typeof(AssignmentsListPage), UserModel);
@@ -117,10 +119,10 @@ namespace cuddly_chainsaw
 
         private async void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame root = Window.Current.Content as Frame;
+            Frame root = MainPage.view;
             AssignmentModel.SelectedAssignment.setTitle(titleTextBox.Text);
             AssignmentModel.SelectedAssignment.setContent(detailsTextBox.Text);
-            AssignmentModel.SelectedAssignment.DDL = new DateTime(ddlBox.Date.Ticks);
+            AssignmentModel.SelectedAssignment.DDL = ddlBox.Date.Value.DateTime;
             AssignmentModel.SelectedAssignment.Type = (uint)AsgType.SelectedIndex;
             await AssignmentModel.updateAssignments();
             UserModel.SelectedAssignment = AssignmentModel.SelectedAssignment;
@@ -159,6 +161,14 @@ namespace cuddly_chainsaw
                 return;
             }
             DataTransferManager.ShowShareUI();
+        }
+
+        private async void deleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame root = MainPage.view;
+            AssignmentModel.SelectedAssignment = UserModel.SelectedAssignment;
+            await AssignmentModel.deleteAssignments();
+            root.Navigate(typeof(AssignmentsListPage), UserModel);
         }
 
         private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)

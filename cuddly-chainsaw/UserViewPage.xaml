@@ -105,14 +105,6 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                    <!--</Grid>
-                                <TextBlock Text="原学号为：" Margin="10"/>
-                                <TextBlock Name="OriginalID_1" Width="150" Height="32" Margin="-170,-470,90,90"/>
-                                <TextBlock Text="更改为:" Margin="10,60,0,0"/>
-                                <TextBox Name="ID" Width="150" Height="32" Margin="-170,-370,90,90"/>
-                                <Button Content="确认" Click="EditUsername" Margin="10,111,0,457"/>
-                                <Button Content="取消" Click="CancelEdit" Margin="91,111,0,457"/>
-                            </Grid>-->
                     <Grid Grid.Row="1" Visibility="Collapsed" x:Name="DeleteUserinfo">
                         <Grid >
                             <Grid.RowDefinitions>
@@ -124,7 +116,7 @@
                             <TextBlock Text="删除用户" Grid.Row="0" Foreground="#FF8CBF26" TextAlignment="Center" FontSize="30" VerticalAlignment="Center" FontFamily="Segoe UI Symbol" HorizontalAlignment="Left" Margin="30,0,0,0"/>
                             <TextBox x:Name="OriginalID_2" Grid.Row="1" Text="" Width="350" Height="35" VerticalAlignment="Center" BorderThickness="0,0,0,1" IsHitTestVisible="False" IsReadOnly="True" />
                             <Grid Grid.Row="2" HorizontalAlignment="Center">
-                                <Button Grid.Row="2" Content="保存" Margin="0,0,0,0" Width="100" Click="RemoveUser" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
+                                <Button Grid.Row="2" Content="删除" Margin="0,0,0,0" Width="100" Click="RemoveUser" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
                                     <Button.Background>
                                         <SolidColorBrush Color="#FF8CBF26"/>
                                     </Button.Background>

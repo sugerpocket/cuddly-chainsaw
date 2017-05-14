@@ -44,6 +44,7 @@ namespace cuddly_chainsaw
         {
             this.InitializeComponent();
             MainPage.view = this.viewFrame;
+            view.Navigate(typeof(AssignmentsListPage), UserModel);
             viewFrame.Navigated += viewChange;
             navSelect.Add(true);
             navSelect.Add(false);
@@ -67,9 +68,6 @@ namespace cuddly_chainsaw
             else
             {
                 UserModel = new UserViewModel();
-                //测试用，之后应该删除
-                //await UserModel.logIn("15331060", "123456");
-                //await UserModel.init();
             }
 
             AssignmentModel = new AssignmentViewModel();

@@ -27,10 +27,6 @@
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="VisualStateMin800">
-                    <!--<VisualState.Setters>
-                        <Setter Target="splitView.DisplayMode" Value="CompactInline" />
-                        <Setter Target="splitView.IsPaneOpen" Value="True" />
-                    </VisualState.Setters>-->
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="800" />
                     </VisualState.StateTriggers>
@@ -51,23 +47,22 @@
                         <ScrollViewer VerticalScrollBarVisibility="Visible" >
                             <StackPanel  Width="440" Margin="0,0,40,0">
                                 <Image Source="Assets/doing.png" Width="160" Height="160" Stretch="UniformToFill" Name="backgroundImage"/>
-                                <AppBarButton Icon="ReShare" HorizontalAlignment="Right" Click="shareButton_Click" Height="40"/>
+                                <AppBarButton Icon="ReShare" HorizontalAlignment="Right" Click="shareButton_Click"  Label="Share" Margin="0,0,40,0"/>
                                 <TextBox Width="350" Header="Title" Margin="0,8,0,0" Name="titleTextBox" IsReadOnly="False" />
                                 <TextBox Width="350" Height="96" Margin="0,8,0,0" Header="Details" Name="detailsTextBox" IsReadOnly="False" />
-                                <!--<DatePicker Width="350" Margin="0,8,0,0" Header="开始时间：" HorizontalAlignment="Center" Name="startBox" IsEnabled="False" />-->
-                                <ComboBox HorizontalAlignment="Right" Width="100" DataContext="作业类型：" Margin="0,20,46,0" x:Name="AsgType">
+                                <CalendarDatePicker Header="结束日期：" Width="350" Margin="0,15,0,0" PlaceholderText="结束日期：" HorizontalAlignment="Center" Name="ddlBox" IsEnabled="True" />
+                                <ComboBox HorizontalAlignment="Right" Width="100" Header="作业类型：" Margin="0,20,46,0" x:Name="AsgType">
                                     <ComboBoxItem Content="其他" />
                                     <ComboBoxItem Content="操作系统" />
                                     <ComboBoxItem Content="数据库" />
                                     <ComboBoxItem Content="计算机组成原理" />
                                     <ComboBoxItem Content="工程数学" />
                                 </ComboBox>
-                                <DatePicker Width="350" Margin="0,8,0,0" Header="结束时间：" HorizontalAlignment="Center" Name="ddlBox" IsEnabled="True" />
-
-                                <RelativePanel Width="350" Margin="0,20,0,0">
-                                    <AppBarButton x:Name="createButton" Icon="Add" Click="createButton_Click" />
-                                    <AppBarButton x:Name="selectFileButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="selectFileButton_Click" />
-                                </RelativePanel>
+                                <StackPanel Margin="0,20,44,0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <AppBarButton x:Name="createButton" Icon="Add" Label="add" Click="createButton_Click" />
+                                    <AppBarButton x:Name="deleteButton" Icon="delete"  Label="delete" Click="deleteButton_Click" Visibility="Collapsed"/>
+                                    <AppBarButton x:Name="selectFileButton" Icon="Pictures" Label="select" Click="selectFileButton_Click" />
+                                </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>
