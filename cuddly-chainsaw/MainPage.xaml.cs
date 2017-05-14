@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,8 +8,6 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -19,19 +19,11 @@ using Newtonsoft.Json.Converters;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using cuddly_chainsaw.ViewModels;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
-using Windows.UI.Composition;
-using Windows.UI.Xaml.Hosting;
-using Windows.UI;
+using System.Collections.ObjectModel;
+using Windows.UI.Xaml.Media.Animation;
 
-//“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
-/// <summary>
-/// Programmer: 高晨
-/// git:Nerotan
-/// Conclusion:App的主界面，根据用户是user或admin决定提供的服务
-/// Version:1.0
-/// </summary>
+// “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
+
 namespace cuddly_chainsaw
 {
     /// <summary>
@@ -39,11 +31,33 @@ namespace cuddly_chainsaw
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
         AssignmentViewModel AssignmentModel;
         UserViewModel UserModel;
 
+        static Type currentPage;
+
+        ObservableCollection<bool> navSelect = new ObservableCollection<bool>();
+
+        public static Frame view = null;
+
         public MainPage()
         {
+            this.InitializeComponent();
+            MainPage.view = this.viewFrame;
+            view.Navigate(typeof(AssignmentsListPage), UserModel);
+            viewFrame.Navigated += viewChange;
+            navSelect.Add(true);
+            navSelect.Add(false);
+            navSelect.Add(false);
+            navSelect.Add(false);
+            navSelect.Add(false);
+            navSelect.Add(false);
+        }
+
+        private void viewChange(object sender, NavigationEventArgs e)
+        {
+            currentPage = viewFrame.CurrentSourcePageType;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -55,9 +69,6 @@ namespace cuddly_chainsaw
             else
             {
                 UserModel = new UserViewModel();
-                //测试用，之后应该删除
-                //await UserModel.logIn("15331060", "123456");
-                //await UserModel.init();
             }
 
             AssignmentModel = new AssignmentViewModel();
@@ -73,35 +84,28 @@ namespace cuddly_chainsaw
             }
         }
 
-        /// <summary>
-        /// homePage: MainPage, 用户登录后显示的主页
-        /// infoPage：查看user或admin的个人信息
-        /// （admin）AssignmentPage： 在此用作创建新的Assignmet，还可以用来查看作业详情
-        ///  AssignmentModel.SelectedAssignment == null， 创建新的Assignment； AssignmentModel.SelectedAssignment != null, 查看Assignment详情
-        /// （admin）userViewPage： 查看现有的所有用户
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
+
+
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var temp = (StackPanel)e.ClickedItem;
-            Frame root = Window.Current.Content as Frame;
-            if (temp.Parent == mainPage)
+            if (temp.Parent == AssignmentsListPage)
             {
-                root.Navigate(typeof(MainPage), UserModel);
+                view.Navigate(typeof(AssignmentsListPage), UserModel);
             }
             else if (temp.Parent == infoPage)
             {
-                root.Navigate(typeof(InfoPage), UserModel);
+                view.Navigate(typeof(InfoPage), UserModel);
             }
             else if (temp.Parent == assignmentPage)
             {
                 UserModel.SelectedAssignment = null;
-                root.Navigate(typeof(AssignmentPage), UserModel);
+                view.Navigate(typeof(AssignmentPage), UserModel);
             }
             else if (temp.Parent == userViewPage)
             {
-                root.Navigate(typeof(UserViewPage), UserModel);
+                view.Navigate(typeof(UserViewPage), UserModel);
             }
         }
 
@@ -111,25 +115,16 @@ namespace cuddly_chainsaw
             splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
         }
 
-        private void Assignment_Clicked(object sender, ItemClickEventArgs e)
+        private void ToggleHand(object sender, PointerRoutedEventArgs e)
         {
-            UserModel.SelectedAssignment = (Assignment)e.ClickedItem;
-            Frame root = Window.Current.Content as Frame;
-            root.Navigate(typeof(AssignmentPage), UserModel);
+            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
         }
 
-        private void doingAssignmentsButton_Click(object sender, RoutedEventArgs e)
+        private void TogglePointer(object sender, PointerRoutedEventArgs e)
         {
-            DoingBox.Visibility = Visibility.Visible;
-            DoneBox.Visibility = Visibility.Collapsed;
-
-
-        }
-
-        private void doneAssignmentsButton_Click(object sender, RoutedEventArgs e)
-        {
-            DoingBox.Visibility = Visibility.Collapsed;
-            DoneBox.Visibility = Visibility.Visible;
+            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
         }
     }
+
+    
 }

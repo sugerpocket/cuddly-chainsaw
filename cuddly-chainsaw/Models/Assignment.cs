@@ -121,6 +121,10 @@ namespace cuddly_chainsaw.Models
 
         public uint Type { get { return (uint)type; } set { type = value; } }
 
+        public string Content { get { return content; } }
+
+        public uint? Week { get { return week; } }
+
         public void setTitle(string newTitle)
         {
             title = newTitle;
