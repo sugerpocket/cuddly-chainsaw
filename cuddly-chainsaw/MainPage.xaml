@@ -393,11 +393,11 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
+
         <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250" Margin="0,0,0,0">
             <!--导航菜单栏-->
             <SplitView.Pane>
-                <Grid Background="White">
+                <Grid Background="White" Name="navMenu">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="45"/>
                         <RowDefinition Height="*" />

@@ -20,6 +20,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage;
 using cuddly_chainsaw.ViewModels;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml.Media.Animation;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 

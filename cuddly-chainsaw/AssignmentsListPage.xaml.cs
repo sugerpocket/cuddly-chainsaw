@@ -24,6 +24,7 @@ using Windows.UI.Notifications;
 using Windows.UI.Composition;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI;
+using Windows.UI.Xaml.Media.Animation;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 /// <summary>
@@ -64,9 +65,26 @@ namespace cuddly_chainsaw
             }
         }
 
-        private void Assignment_Clicked(object sender, ItemClickEventArgs e)
+        private void DetailPointerEnter(object sender, PointerRoutedEventArgs e)
         {
-            UserModel.SelectedAssignment = (Assignment)e.ClickedItem;
+            var target = (Grid)sender;
+            target.Opacity = 1;
+            ToggleHand(sender, e);
+        }
+
+        private void DetailPointOut(object sender, PointerRoutedEventArgs e)
+        {
+            var target = (Grid)sender;
+            target.Opacity = 0;
+            TogglePointer(sender, e);
+        }
+
+
+
+        private void Assignment_Clicked(object sender, RoutedEventArgs e)
+        {
+            var item = ((Button)sender).DataContext;
+            UserModel.SelectedAssignment = (Assignment)item;
             Frame root = MainPage.view;
             root.Navigate(typeof(AssignmentPage), UserModel);
         }
@@ -81,6 +99,16 @@ namespace cuddly_chainsaw
         {
             DoingBox.Visibility = Visibility.Collapsed;
             DoneBox.Visibility = Visibility.Visible;
+        }
+
+        private void ToggleHand(object sender, PointerRoutedEventArgs e)
+        {
+            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
+        }
+
+        private void TogglePointer(object sender, PointerRoutedEventArgs e)
+        {
+            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
         }
     }
 }
