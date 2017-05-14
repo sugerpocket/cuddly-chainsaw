@@ -27,11 +27,10 @@ using Windows.UI.Xaml.Media.Animation;
 namespace cuddly_chainsaw
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// 主界面，用于实现侧边栏控制界面之间的跳转
     /// </summary>
     public sealed partial class MainPage : Page
     {
-
         AssignmentViewModel AssignmentModel;
         UserViewModel UserModel;
 
@@ -60,6 +59,11 @@ namespace cuddly_chainsaw
             currentPage = viewFrame.CurrentSourcePageType;
         }
 
+        /// <summary>
+        /// 页面初始化的UI逻辑
+        /// 对于普通用户，隐藏 新建作业界面 的跳转和 所有用户信息界面 的跳转。
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null && e.Parameter.GetType() == typeof(UserViewModel))
@@ -84,9 +88,11 @@ namespace cuddly_chainsaw
             }
         }
 
-        
-
-
+        /// <summary>
+        /// 导航，用于导航栏右边部分页面的跳转
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var temp = (StackPanel)e.ClickedItem;

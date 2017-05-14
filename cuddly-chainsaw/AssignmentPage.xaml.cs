@@ -19,12 +19,11 @@ using Windows.Storage.Streams;
 using Windows.Storage;
 using Windows.ApplicationModel.DataTransfer;
 
-// “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
 namespace cuddly_chainsaw
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// 可用于显示已有的作业信息，或者创建一个新的作业
     /// </summary>
     public sealed partial class AssignmentPage : Page
     {
@@ -60,45 +59,10 @@ namespace cuddly_chainsaw
         }
 
         /// <summary>
-        /// homePage: MainPage, 用户登录后显示的主页
-        /// infoPage：查看user或admin的个人信息
-        /// （admin）AssignmentPage： 在此用作创建新的Assignmet，还可以用来查看作业详情
-        ///  AssignmentModel.SelectedAssignment == null， 创建新的Assignment； AssignmentModel.SelectedAssignment != null, 查看Assignment详情
-        /// （admin）userViewPage： 查看现有的所有用户
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var temp = (StackPanel)e.ClickedItem;
-            Frame root = Window.Current.Content as Frame;
-            if (temp.Parent == mainPage)
-            {
-                root.Navigate(typeof(MainPage), UserModel);
-            }
-            else if (temp.Parent == infoPage)
-            {
-                root.Navigate(typeof(InfoPage), UserModel);
-            }
-            else if (temp.Parent == assignmentPage)
-            {
-                UserModel.SelectedAssignment = null;
-                root.Navigate(typeof(AssignmentPage), UserModel);
-            }
-            else if (temp.Parent == userViewPage)
-            {
-                root.Navigate(typeof(UserViewPage), UserModel);
-            }
-        }
-
-        private void SpliteView_Click(object sender, RoutedEventArgs e)
-        {
-            splitView.IsPaneOpen = (splitView.IsPaneOpen == true) ? false : true;
-        }
-
-        /// <summary>
         /// 当目前登陆的用户是admin时，才能修改Assignment的信息
         /// 否则用户是普通user，禁用修改信息
+        /// 当添加作业时，显示add按钮
+        /// 当修改作业时，显示update按钮
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -109,10 +73,10 @@ namespace cuddly_chainsaw
                 textBlock.Text = asg.Title;
                 titleTextBox.Text = asg.Title;
                 detailsTextBox.Text = asg.getContent();
-                //startBox.Date = new DateTime(asg.Start.Ticks);
                 ddlBox.Date = new DateTime(asg.DDL.Ticks);
                 createButton.Icon = new SymbolIcon(Symbol.Upload);
-                string temp;
+                createButton.Label = "update";
+                deleteButton.Visibility = Visibility.Visible;
                 if (asg.Type != 0)
                 {
                     backgroundImage.Source = new BitmapImage(new Uri("ms-appx:Assets/" + asg.Type + ".jpg"));
@@ -128,12 +92,11 @@ namespace cuddly_chainsaw
             }
             if (UserModel.CurrentUser == null || !UserModel.CurrentUser.isAdmin())
             {
-                assignmentPage.Visibility = Visibility.Collapsed;
-                userViewPage.Visibility = Visibility.Collapsed;
                 titleTextBox.IsReadOnly = true;
                 detailsTextBox.IsReadOnly = true;
                 ddlBox.IsEnabled = false;
                 createButton.Visibility = Visibility.Collapsed;
+                deleteButton.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -149,23 +112,23 @@ namespace cuddly_chainsaw
                 updateButton_Click(sender, e);
                 return;
             }
-            Frame root = Window.Current.Content as Frame;
-            Assignment newAsg = new Assignment(titleTextBox.Text, detailsTextBox.Text, (uint)AsgType.SelectedIndex, 0, new DateTime(ddlBox.Date.Ticks));
+            Frame root = MainPage.view;
+            Assignment newAsg = new Assignment(titleTextBox.Text, detailsTextBox.Text, (uint)AsgType.SelectedIndex, 0, ddlBox.Date.Value.DateTime);
             await AssignmentModel.newAssignments(newAsg);
             UserModel.SelectedAssignment = AssignmentModel.SelectedAssignment;
-            root.Navigate(typeof(MainPage), UserModel);
+            root.Navigate(typeof(AssignmentsListPage), UserModel);
         }
 
         private async void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame root = Window.Current.Content as Frame;
+            Frame root = MainPage.view;
             AssignmentModel.SelectedAssignment.setTitle(titleTextBox.Text);
             AssignmentModel.SelectedAssignment.setContent(detailsTextBox.Text);
-            AssignmentModel.SelectedAssignment.DDL = new DateTime(ddlBox.Date.Ticks);
+            AssignmentModel.SelectedAssignment.DDL = ddlBox.Date.Value.DateTime;
             AssignmentModel.SelectedAssignment.Type = (uint)AsgType.SelectedIndex;
             await AssignmentModel.updateAssignments();
             UserModel.SelectedAssignment = AssignmentModel.SelectedAssignment;
-            root.Navigate(typeof(MainPage), UserModel);
+            root.Navigate(typeof(AssignmentsListPage), UserModel);
         }
 
         private async void selectFileButton_Click(object sender, RoutedEventArgs e)
@@ -202,6 +165,19 @@ namespace cuddly_chainsaw
             DataTransferManager.ShowShareUI();
         }
 
+        private async void deleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame root = MainPage.view;
+            AssignmentModel.SelectedAssignment = UserModel.SelectedAssignment;
+            await AssignmentModel.deleteAssignments();
+            root.Navigate(typeof(AssignmentsListPage), UserModel);
+        }
+
+        /// <summary>
+        /// app to app communication
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequest request = args.Request;

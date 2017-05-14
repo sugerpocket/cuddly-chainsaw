@@ -15,180 +15,121 @@
         <cvt:UriConverter x:Key="uricvt"/>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="VisualStateMin0">
-                    <VisualState.Setters>
-                        <Setter Target="splitView.DisplayMode" Value="CompactOverlay"/>
-                        <Setter Target="splitView.IsPaneOpen" Value="False" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState x:Name="VisualStateMin800">
-                    <VisualState.Setters>
-                        <Setter Target="splitView.DisplayMode" Value="CompactInline" />
-                        <Setter Target="splitView.IsPaneOpen" Value="True" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
+    <Grid>
         <Grid>
             <Grid>
-                <SplitView x:Name="splitView" DisplayMode="CompactInline"  CompactPaneLength="48" IsPaneOpen="True" OpenPaneLength="250"  Height="720">
-                    <!--导航菜单栏-->
-                    <SplitView.Pane>
-                        <Grid >
-                            <ListView Grid.Row="0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
-                                <ListViewItem>
-                                    <StackPanel Orientation="Horizontal">
-                                        <AppBarButton x:Name="allA" Click="SpliteView_Click" Height="20" Width="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Background="White">
+                        <TextBlock Text="用户列表" Margin="20,0,20,0" FontWeight="Bold" FontFamily="Segoe UI Symbol" FontSize="40" Foreground="YellowGreen" />
+                    </Grid>
+                    <GridView Grid.Row="1" IsItemClickEnabled="True"
+                          ItemsSource="{x:Bind userViewModel.UserItems}" x:Name="UserGridView" BorderBrush="Transparent" Visibility="Visible" Padding="20,0,20,0">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GridViewItem">
+                                            <ContentPresenter>
+                                            </ContentPresenter>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="md:UserMeta">
+                                <Grid Background="White" Width="160" BorderBrush="Transparent" Margin="10,20,10,20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="150"/>
+                                        <RowDefinition Height="48"/>
+                                        <RowDefinition Height="10"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="28"/>
+                                            <RowDefinition Height="116"/>
+                                        </Grid.RowDefinitions>
+                                        <AppBarButton Opacity="0.5" PointerEntered="ToggleHand" PointerExited="TogglePointer" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Height="18" Margin="0,0,4,0" Width="18" RenderTransformOrigin="-0.333,0.519">
                                             <AppBarButton.Content>
-                                                <iconPacks:PackIconOcticons Kind="Grabber" Margin="0,-14,0,0" Width="20" Height="20"></iconPacks:PackIconOcticons>
+                                                <iconPacks:PackIconOcticons Kind="Grabber" Margin="0,-14,0,0" Width="18" Height="18"></iconPacks:PackIconOcticons>
                                             </AppBarButton.Content>
+                                            <AppBarButton.Flyout>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem PointerEntered="ToggleHand" PointerExited="TogglePointer" Text="修改用户名" Click="EditUser"/>
+                                                    <MenuFlyoutItem PointerEntered="ToggleHand" PointerExited="TogglePointer" Text="删除用户" Click="DeleteUser"/>
+                                                </MenuFlyout>
+                                            </AppBarButton.Flyout>
                                         </AppBarButton>
+                                        <Ellipse Width="116" Height="116" Grid.Row="1" HorizontalAlignment="Center">
+                                            <Ellipse.Fill>
+                                                <ImageBrush x:Name="ImageToload" ImageSource="{Binding UId,Converter={StaticResource uricvt},Mode=OneWay}"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                    </Grid>
+                                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Row="1" FontSize="16" Text="{x:Bind Path=Username,Mode=OneWay}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                                        <TextBlock Grid.Row="1" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </StackPanel>
-                                </ListViewItem>
-                                <ListViewItem  x:Name="mainPage">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <SymbolIcon Symbol="Library"/>
-                                        <TextBlock Text="所有作业" Margin="24,0,0,0" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </ListViewItem>
-                                <ListViewItem x:Name="infoPage" >
-                                    <StackPanel Orientation="Horizontal" >
-                                        <SymbolIcon Symbol="contactInfo" />
-                                        <TextBlock Text="个人信息" Margin="24,0,0,0" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </ListViewItem>
-                                <ListViewItem x:Name="assignmentPage">
-                                    <StackPanel Orientation="Horizontal">
-                                        <SymbolIcon Symbol="Add" />
-                                        <TextBlock Text="添加作业" Margin="24,0,0,0" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </ListViewItem>
-                                <ListViewItem  x:Name="userViewPage">
-                                    <StackPanel  Orientation="Horizontal" >
-                                        <SymbolIcon Symbol="people" />
-                                        <TextBlock Text="所有用户" Margin="24,0,0,0" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </ListViewItem>
-                            </ListView>
-                        </Grid>
-                    </SplitView.Pane>
-                    <SplitView.Content>
-                        <Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                    <Grid Grid.Row="1" Visibility="Collapsed" x:Name="EditUserInfo">
+                        <Grid >
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="120"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="0.2*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.6*"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <AppBarButton Icon="View" Margin="34,20,0,0"></AppBarButton>
-                                <TextBlock Text="用户信息" Margin="30,60,0,0" FontSize="20"/>
-                            </Grid>
-                            <GridView Grid.Row="1" IsItemClickEnabled="True"
-                          ItemsSource="{x:Bind userViewModel.UserItems}" x:Name="UserGridView" Visibility="Visible">
-                                <GridView.ItemTemplate>
-                                    <DataTemplate x:DataType="md:UserMeta">
-                                        <xp:Shadow Z_Depth="1" CornerRadius="10" Width="180">
-                                            <Grid Background="White" Width="160" Margin="2,2,2,2" CornerRadius="10">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="128"/>
-                                                    <RowDefinition Height="48"/>
-                                                    <RowDefinition Height="36"/>
-                                                </Grid.RowDefinitions>
-                                                <AppBarButton Opacity="0.5" Grid.Row="2" Icon="Edit" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="34" Width="34" Margin="0,0,0,0">
-                                                    <AppBarButton.Flyout>
-                                                        <MenuFlyout>
-                                                            <MenuFlyoutItem Text="修改用户名" Click="EditUser"/>
-                                                            <MenuFlyoutItem Text="删除用户" Click="DeleteUser"/>
-                                                        </MenuFlyout>
-                                                    </AppBarButton.Flyout>
-                                                </AppBarButton>
-                                                <Ellipse Width="116" Height="116" Grid.Row="0" HorizontalAlignment="Center">
-                                                    <Ellipse.Fill>
-                                                        <ImageBrush x:Name="ImageToload" ImageSource="{Binding UId,Converter={StaticResource uricvt},Mode=OneWay}"/>
-                                                    </Ellipse.Fill>
-                                                </Ellipse>
-                                                <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                                                    <TextBlock Grid.Row="1" FontSize="16" Text="{x:Bind Path=Username,Mode=OneWay}" VerticalAlignment="Center" Margin="0,0,0,8"/>
-                                                    <TextBlock Grid.Row="1" FontSize="12" Text="{x:Bind Path=Nickname,Mode=OneWay}" Opacity="0.4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </xp:Shadow>
-                                    </DataTemplate>
-                                </GridView.ItemTemplate>
-                            </GridView>
-                            <Grid Grid.Row="1" Visibility="Collapsed" x:Name="EditUserInfo">
-                                <Grid >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="0.2*"/>
-                                        <RowDefinition Height="0.3*"/>
-                                        <RowDefinition Height="0.3*"/>
-                                        <RowDefinition Height="0.3*"/>
-                                        <RowDefinition Height="0.6*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="修改用户名" Grid.Row="0" Foreground="#FF8CBF26" TextAlignment="Center" FontSize="30" VerticalAlignment="Center" FontFamily="Segoe UI Symbol" HorizontalAlignment="Left" Margin="30,0,0,0"/>
-                                    <TextBox x:Name="OriginalID_1" Grid.Row="1" Text="" Width="350" Height="35" VerticalAlignment="Center" BorderThickness="0,0,0,1" IsHitTestVisible="False" IsReadOnly="True" />
-                                    <TextBox x:Name="ID" Grid.Row="2" Text="" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="修改学号为：" BorderThickness="0,0,0,1" />
-                                    <Grid Grid.Row="3" HorizontalAlignment="Center">
-                                        <Button Grid.Row="3" Content="保存" Margin="0,0,0,0" Width="100" Click="EditUsername" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
-                                            <Button.Background>
-                                                <SolidColorBrush Color="#FF8CBF26"/>
-                                            </Button.Background>
-                                        </Button>
-                                        <Button Grid.Row="3" Content="取消" Margin="120,0,0,0" Width="100" Click="CancelEdit" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
-                                            <Button.Background>
-                                                <SolidColorBrush Color="#FF8CBF26"/>
-                                            </Button.Background>
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <!--</Grid>
-                                <TextBlock Text="原学号为：" Margin="10"/>
-                                <TextBlock Name="OriginalID_1" Width="150" Height="32" Margin="-170,-470,90,90"/>
-                                <TextBlock Text="更改为:" Margin="10,60,0,0"/>
-                                <TextBox Name="ID" Width="150" Height="32" Margin="-170,-370,90,90"/>
-                                <Button Content="确认" Click="EditUsername" Margin="10,111,0,457"/>
-                                <Button Content="取消" Click="CancelEdit" Margin="91,111,0,457"/>
-                            </Grid>-->
-                            <Grid Grid.Row="1" Visibility="Collapsed" x:Name="DeleteUserinfo">
-                                <Grid >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="0.2*"/>
-                                        <RowDefinition Height="0.3*"/>
-                                        <RowDefinition Height="0.3*"/>
-                                        <RowDefinition Height="0.6*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="删除用户" Grid.Row="0" Foreground="#FF8CBF26" TextAlignment="Center" FontSize="30" VerticalAlignment="Center" FontFamily="Segoe UI Symbol" HorizontalAlignment="Left" Margin="30,0,0,0"/>
-                                    <TextBox x:Name="OriginalID_2" Grid.Row="1" Text="" Width="350" Height="35" VerticalAlignment="Center" BorderThickness="0,0,0,1" IsHitTestVisible="False" IsReadOnly="True" />
-                                    <Grid Grid.Row="2" HorizontalAlignment="Center">
-                                        <Button Grid.Row="2" Content="保存" Margin="0,0,0,0" Width="100" Click="RemoveUser" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
-                                            <Button.Background>
-                                                <SolidColorBrush Color="#FF8CBF26"/>
-                                            </Button.Background>
-                                        </Button>
-                                        <Button Grid.Row="3" Content="取消" Margin="120,0,0,0" Width="100" Click="CancelDelete" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
-                                            <Button.Background>
-                                                <SolidColorBrush Color="#FF8CBF26"/>
-                                            </Button.Background>
-                                        </Button>
-                                    </Grid>
-                                </Grid>
+                            <TextBlock Text="修改用户名" Grid.Row="0" Foreground="#FF8CBF26" TextAlignment="Center" FontSize="30" VerticalAlignment="Center" FontFamily="Segoe UI Symbol" HorizontalAlignment="Left" Margin="30,0,0,0"/>
+                            <TextBox x:Name="OriginalID_1" Grid.Row="1" Text="" Width="350" Height="35" VerticalAlignment="Center" BorderThickness="0,0,0,1" IsHitTestVisible="False" IsReadOnly="True" />
+                            <TextBox x:Name="ID" Grid.Row="2" Text="" Width="350" Height="35" VerticalAlignment="Center" PlaceholderText="修改学号为：" BorderThickness="0,0,0,1" />
+                            <Grid Grid.Row="3" HorizontalAlignment="Center">
+                                <Button Grid.Row="3" Content="保存" Margin="0,0,0,0" Width="100" Click="EditUsername" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
+                                    <Button.Background>
+                                        <SolidColorBrush Color="#FF8CBF26"/>
+                                    </Button.Background>
+                                </Button>
+                                <Button Grid.Row="3" Content="取消" Margin="120,0,0,0" Width="100" Click="CancelEdit" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
+                                    <Button.Background>
+                                        <SolidColorBrush Color="#FF8CBF26"/>
+                                    </Button.Background>
+                                </Button>
                             </Grid>
                         </Grid>
-                    </SplitView.Content>
-                </SplitView>
+                    </Grid>
+                    <Grid Grid.Row="1" Visibility="Collapsed" x:Name="DeleteUserinfo">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="0.6*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="删除用户" Grid.Row="0" Foreground="#FF8CBF26" TextAlignment="Center" FontSize="30" VerticalAlignment="Center" FontFamily="Segoe UI Symbol" HorizontalAlignment="Left" Margin="30,0,0,0"/>
+                            <TextBox x:Name="OriginalID_2" Grid.Row="1" Text="" Width="350" Height="35" VerticalAlignment="Center" BorderThickness="0,0,0,1" IsHitTestVisible="False" IsReadOnly="True" />
+                            <Grid Grid.Row="2" HorizontalAlignment="Center">
+                                <Button Grid.Row="2" Content="删除" Margin="0,0,0,0" Width="100" Click="RemoveUser" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
+                                    <Button.Background>
+                                        <SolidColorBrush Color="#FF8CBF26"/>
+                                    </Button.Background>
+                                </Button>
+                                <Button Grid.Row="3" Content="取消" Margin="120,0,0,0" Width="100" Click="CancelDelete" Height="38" Foreground="White" BorderThickness="0" FontSize="16">
+                                    <Button.Background>
+                                        <SolidColorBrush Color="#FF8CBF26"/>
+                                    </Button.Background>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
-
-
 </Page>

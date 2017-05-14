@@ -32,7 +32,6 @@ namespace cuddly_chainsaw
         UserViewModel UserModel;
         public LoginPage()
         {
-            //this.InitializeComponent();
             ManipulationCompleted += AppleAnimationPage_ManipulationCompleted;
             Transitions = new TransitionCollection();
             Transitions.Add(PaneAnim);
@@ -78,55 +77,62 @@ namespace cuddly_chainsaw
             Boolean isLogin = await UserModel.logIn(user, psw);
             if (isLogin)
             {
-                //login.Visibility = Visibility.Collapsed;
-                //sign.Visibility = Visibility.Collapsed;
-                //proRring.Visibility = Visibility.Visible;
-
                 AssignmentModel = new AssignmentViewModel();
+                await AssignmentModel.getAllAssignments();
                 var updator = TileUpdateManager.CreateTileUpdaterForApplication();
                 updator.Clear();
                 updator.EnableNotificationQueue(true);
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(File.ReadAllText("Tile.xml"));
                 XmlNodeList texts = xmlDoc.GetElementsByTagName("text");
-                foreach (Assignment ass in AssignmentModel.AllAssignments)
+                XmlNodeList images = xmlDoc.GetElementsByTagName("image");
+                foreach (Assignment ass in AssignmentModel.DoingAssignments)
                 {
                     if (!ass.isEnded())
                     {
+                        string pic = "Assets/header.jpeg";
+                        if (ass.Type > 0 && ass.Type < 5)
+                        {
+                            pic = "Assets/" + ass.Type + ".jpg";
+                        }
                         int count = 0;
-
+                        int countImage = 0;
                         // Small
                         ((XmlElement)texts[count]).InnerText = ass.Title;
+                        ((XmlElement)images[countImage]).SetAttribute("src", pic);
                         count++;
+                        countImage++;
 
                         // Medium
                         ((XmlElement)texts[count]).InnerText = ass.Title;
                         count++;
                         ((XmlElement)texts[count]).InnerText = ass.DDL.ToString();
+                        ((XmlElement)images[countImage]).SetAttribute("src", pic);
                         count++;
+                        countImage++;
 
                         // Wide
                         ((XmlElement)texts[count]).InnerText = ass.Title;
                         count++;
                         ((XmlElement)texts[count]).InnerText = ass.DDL.ToString();
+                        ((XmlElement)images[countImage]).SetAttribute("src", pic);
                         count++;
+                        countImage++;
 
                         //Large
                         ((XmlElement)texts[count]).InnerText = ass.Title;
                         count++;
                         ((XmlElement)texts[count]).InnerText = ass.DDL.ToString();
+                        ((XmlElement)images[countImage]).SetAttribute("src", pic);
 
 
                         TileNotification notification = new TileNotification(xmlDoc);
                         updator.Update(notification);
                     }
                 }
+                
                 this.Frame.Navigate(typeof(MainPage), UserModel);
             }
-            //login.Visibility = Visibility.Visible;
-            //sign.Visibility = Visibility.Visible;
-            //proRring.Visibility = Visibility.Collapsed;
-
         }
 
         private void sign_Click(object sender, RoutedEventArgs e)
